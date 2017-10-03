@@ -1,11 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-X = np.arange(-2, +2, 0.1)
+INTERVAL_START = -2
+INTERVAL_STOP = 2
+SAMPLING_INTERVAL = 0.1
+# Create a new figure
+fig = plt.figure()
+# Split the figure in 1*1 (nrows*ncols) subaxes and create a new suplot positioned at 1 (plot_number)
+nrows = 1
+ncols = 1
+plot_number = 1
+ax = fig.add_subplot(nrows, ncols, plot_number)
+# Set the labels for the axes
+ax.set_xlabel('$x$')
+ax.set_ylabel('$f(x)$')
+# Plot a line with a solid linestyle connecting all the vertices
+X = np.linspace(INTERVAL_START, INTERVAL_STOP, ((INTERVAL_STOP - INTERVAL_START) / SAMPLING_INTERVAL) + 1)
 Y = X**3 - 2*X + 2
-plt.xlabel('$x$')
-plt.ylabel('$f(x)$')
-plt.title('Graph of the function $f(x)=x^3-2x+2$ over the interval $[-2, +2]$')
-plt.plot(X, Y)
-# plt.show()
+ax.plot(X, Y)
+# Save the current figure
 plt.savefig('../Images/01-one-dimensional-function-example.png')
