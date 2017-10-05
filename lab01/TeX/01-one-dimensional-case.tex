@@ -1,0 +1,32 @@
+\section{One dimensional case}
+    Assume that \(x \in \R\) and that
+    \[f(x) = x^3 - 2x + 2\]
+    First of all, I can plot the function so that I can have an idea of its features (see figure \ref{one-dimensional-function}).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/01-one-dimensional-function-example.png}
+        \caption{Graph of the function \(f(x) = x^3 - 2x + 2\) over the interval \([-2, +2]\)}
+        \label{one-dimensional-function}
+    \end{figure}
+    I am now interested in checking whether the points \(x^*\) that satisfy \(f'(x^*) = 0\) are congruent with the graph of the function or not. Let's compute the points \(x^*\) analytically.
+    \begin{enumerate}
+        \item Find the derivative with respect to \(x\) of the function \(f(x)\)
+        \[f'(x) = 3x^2 - 2\]
+        \item Compute the roots \(x^{*}_{1}\) and \(x^{*}_{2}\) of \(f'(x)\), finding the solutions of the equation \(f'(x) = 0\)
+        \[x^{*}_{1} = -\sqrt{\frac{2}{3}} \approx +0.8165\]
+        \[x^{*}_{2} = +\sqrt{\frac{2}{3}} \approx -0.8165\]
+    \end{enumerate}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/01-one-dimensional-function-example-with-extrema.png}
+        \caption{Graph of the function \(f(x) = x^3 - 2x + 2\) over the interval \([-2, +2]\), with two dashed lines indicating the abscissa of its extrema (\(x^{*}_{1}\) and \(x^{*}_{2}\))}
+        \label{one-dimensional-function-with-extrema}
+    \end{figure}
+    Figure \ref{one-dimensional-function-with-extrema} represents two lines indicating the abscissa of extrema. In this way, you can easily see that the points \(x^{*}_{1}\) and \(x^{*}_{2}\) are congruent with the graph of the function and that the real extrema correspond to the values computed analytically.\par
+    Let's now focus on \(x^{*}_{1}\). I already know that it is an extremum, but I still don't know if it is a minimum or a maximum. In order to answer this question, it is useful to perform a Taylor expansion around \(x^{*}_{1}\) (a function can be approximated by using a finite number of terms of its Taylor series):
+    \[f(x^{*}_{1} + d) = f(x^{*}_{1}) + df'(x^{*}_{1}) + \frac{1}{2}d^2f''(x^{*}_{1}) + \ac{HOT}\]
+    Now, select \(d \in \R_{\ne 0}\) sufficiently close to 0 so the \acl{HOT} become negligible compared to the second order terms:
+    \[f(x^{*}_{1} + d) \approx f(x^{*}_{1}) + df'(x^{*}_{1}) + \frac{1}{2}d^2f''(x^{*}_{1})\]
+    Since the first derivative is zero at the stationary point (\(f'(x^{*}_{1}) = 0\)), the above equation becomes
+    \[f(x^{*}_{1} + d) \approx f(x^{*}_{1}) + \frac{1}{2}d^2f''(x^{*}_{1})\]
+    I can now determine if \(x^{*}_{1}\) is a local minimum or maximum by examining the value of \(f''(x^{*}_{1})\), since \(\frac{1}{2}d^2\) is always positive. If \(f''(x^{*}_{1})\) is positive than \(f(x^{*}_{1})\) is a local minimum, otherwise is a local maximum
