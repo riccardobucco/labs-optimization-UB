@@ -20,7 +20,7 @@ X = np.linspace(INTERVAL_START, INTERVAL_STOP, ((INTERVAL_STOP - INTERVAL_START)
 Y = X**3 - 2*X + 2
 ax.plot(X, Y)
 # Save the current figure
-plt.savefig('../Images/01-one-dimensional-function-example.png')
+plt.savefig('../Images/01-one-dimensional-function.png')
 
 # Add two dashed lines indicating where the (analitically) computed extrema are located
 X = [0.8165, 0.8165]
@@ -29,4 +29,4 @@ ax.plot(X, Y, color='red', linestyle='dashed')
 X = [-0.8165,-0.8165]
 ax.plot(X, Y, color='red', linestyle='dashed')
 # Save the current figure
-plt.savefig('../Images/01-one-dimensional-function-example-with-extrema')
+plt.savefig('../Images/01-one-dimensional-function-with-extrema')
