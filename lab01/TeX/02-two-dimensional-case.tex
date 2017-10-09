@@ -1,0 +1,206 @@
+\section{Two dimensional case}
+    I am now going to focus on simple two dimensional functions. Assume that \(\vec{x} = (x_1, x_2)^T \in \R^2\). Let's focus on the following function:
+    \[f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\]
+    First of all, I can plot the function so that I can have an idea of its features (see figure \ref{two-dimensional-function-1-surface}).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-1-surface.png}
+        \caption{Graph of the function \(f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-1-surface}
+    \end{figure}
+    As an alternative to the 3D surface plot, we can represent a contour plot\footnote{A contour plot is a graphical technique for representing a three dimensional surface by plotting constant \(f(\vec{x})\) slices, called contours, on a two dimensional format. Given a value for \(f(\vec{x})\), lines are drawn for connecting the \((x_1, x_2)\) coordinates where that \(f(\vec{x})\) value occurs.}, which is really useful to answer the question \emph{how does \(f(\vec{x})\) change as a function of \(x_1\) and \(x_2\)?} (see figure \ref{two-dimensional-function-1-contours}).\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-1-contours.png}
+        \caption{Contour plot of the function \(f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-1-contours}
+    \end{figure}
+    Now I want to check whether the point \(\vec{x}^* = (x_{1}^{*}, x_{2}^{*})^T\) that satisfies \(\nabla f(\vec{x}^*) = 0\) is congruent with the graph of the function or not. Let's compute the point \(\vec{x}^*\) analytically.
+    \begin{enumerate}
+        \item \(\nabla f(\vec{x})\) can be regarded as the column vector \((\frac{\partial f}{\partial x_1}(\vec{x}), \frac{\partial f}{\partial x_2}(\vec{x}))^T\)
+        \begin{itemize}
+            \item Find the derivative with respect to \(x_1\) of the function \(f(\vec{x})\)
+            \[\frac{\partial f}{\partial x_1}(\vec{x}) = 2x_1\]
+            \item Find the derivative with respect to \(x_2\) of the function \(f(\vec{x})\)
+            \[\frac{\partial f}{\partial x_2}(\vec{x}) = 2x_2\]
+        \end{itemize}
+        \item Compute the single root \(\vec{x}^{*}\) of \(\nabla f(\vec{x})\), finding the solution of the equation \(\nabla f(\vec{x}) = (\frac{\partial f}{\partial x_1}(\vec{x}), \frac{\partial f}{\partial x_2}(\vec{x}))^T = (0, 0)^T\)
+        \[x^{*}_{1} = 0\]
+        \[x^{*}_{2} = 0\]
+    \end{enumerate}
+    You can easily see that the point \(\vec{x} = (x^{*}_{1}, x^{*}_{2})^T\) is congruent with the graph of the function (see figures \ref{two-dimensional-function-1-surface} and \ref{two-dimensional-function-1-contours}).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-1-gradient-X1.png}
+        \caption{Graph of the function \(\frac{\partial f}{\partial x_1}(\vec{x}) = 2x_1\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-1-gradient-X1}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-1-gradient-X2.png}
+        \caption{Graph of the function \(\frac{\partial f}{\partial x_2}(\vec{x}) = 2x_2\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-1-gradient-X2}
+    \end{figure}
+    Moreover, if you try to plot the graphs of the partial derivatives \(\frac{\partial f}{\partial x_1}(\vec{x})\) and \(\frac{\partial f}{\partial x_2}(\vec{x})\) (two planes), you can see that they pass through the point \((0, 0)^T\), supporting my results (see figures \ref{two-dimensional-function-1-gradient-X1} and \ref{two-dimensional-function-1-gradient-X2}).\par
+    Now I want find out some useful information about the shape of \(f(\vec{x})\) at \(\vec{x} = \vec{x}^*\). We already know that \(\vec{x}^*\) is a stationary point, because it is a point in the domain of \(f(\vec{x})\) where all partial derivatives are zero (or, equivalently, because the gradient is zero). I have now to figure out if the stationary point \(\vec{x}^*\) is a local minimum, a local maximum or a saddle point. The different cases may be distinguished by considering the eigenvalues of the Hessian matrix of second derivatives \(\nabla^2 f(\vec{x})\).
+    \begin{enumerate}
+        \item Compute all the second partial derivatives of \(f(\vec{x})\)
+        \[\frac{\partial^2 f}{\partial x_1^2}(\vec{x}) = 2\]
+        \[\frac{\partial^2 f}{\partial x_1 \partial x_2}(\vec{x}) = 0\]
+        \[\frac{\partial^2 f}{\partial x_2 \partial x_1}(\vec{x}) = 0\]
+        \[\frac{\partial^2 f}{\partial x_2^2}(\vec{x}) = 2\]
+        \item Compute the Hessian matrix \(\nabla^2 f(\vec{x})\) at the point \(\vec{x} = \vec{x}^*\)
+            \[
+                \nabla^2 f(\vec{x}^*) =
+                \begin{pmatrix}
+                    \frac{\partial^2 f}{\partial x_1^2}(\vec{x}^*) &
+                    \frac{\partial^2 f}{\partial x_1 \partial x_2}(\vec{x}^*) \\
+                    \frac{\partial^2 f}{\partial x_2 \partial x_1}(\vec{x}^*) &
+                    \frac{\partial^2 f}{\partial x_2^2}(\vec{x}^*)
+                \end{pmatrix}
+                =
+                \begin{pmatrix}
+                    2 & 0 \\
+                    0 & 2
+                \end{pmatrix}
+            \]
+        \item Find the determinant of \(\nabla^2 f(\vec{x}^*) - \lambda I\)
+            \begin{align*}
+                det(\nabla^2 f(\vec{x}^*) - \lambda I) &= det\left (
+                \begin{pmatrix}
+                    2 & 0 \\
+                    0 & 2
+                \end{pmatrix}
+                -
+                \begin{pmatrix}
+                    \lambda & 0 \\
+                    0 & \lambda
+                \end{pmatrix}
+                \right ) \\
+                &= det \left (
+                    \begin{pmatrix}
+                        2-\lambda & 0 \\
+                        0 & 2-\lambda
+                    \end{pmatrix}
+                \right ) \\
+                &= (2-\lambda)(2-\lambda)
+            \end{align*}
+        \item Find the eigenvalues of \(\nabla^2 f(\vec{x}^*)\), solving the equation \((2-\lambda)^2 = 0\)
+            \[\lambda_1 = \lambda_2 = 2\]
+    \end{enumerate}
+    I know that for a function of \(n\) variables
+    \begin{itemize}
+        \item the stationary point is a local maximum if and only if the number of negative eigenvalues is \(n\) (or, equivalently, if the Hessian matrix is negative definite);
+        \item the stationary point is a local minimum if and only if the number of positive eigenvalues is \(n\) (or equivalently, if the Hessian matrix is positive definite);
+        \item otherwise, the stationary point is a saddle point (that is, a point which is a maximum in some directions and a minimum in others).
+    \end{itemize}
+    Since we have found out that the eigenvalues \(\lambda_1\) and \(\lambda_2\) of \(f(\vec{x}^*)\) are positive, we conclude that \(\vec{x}^* = (0, 0)^T\) is a local minimum of \(f(\vec{x})\). The figure \ref{two-dimensional-function-1-surface} clearly shows that the result is correct.\par
+    Assume that \(\vec{x} = (x_1, x_2)^T \in \R^2\). I am now interested in studying the following functions:
+    \begin{itemize}
+        \item \(f_A(\vec{x}) = -x_1^2-x_2^2\)
+        \item \(f_B(\vec{x}) = x_1^2-x_2^2\)
+        \item \(f_C(\vec{x}) = x_1^2\)
+    \end{itemize}
+    First of all, I have to analytically compute which are the stationary points of \(f_A(\vec{x})\), \(f_B(\vec{x})\) and \(f_C(\vec{x})\) (finding the points in which the gradient of each function is zero). After that, I have to compute the Hessian matrix and study its eigenvalues, in order to understand if the stationary points are local minima, local maxima or saddle points.\par
+    Let's start with the first function: \(f_A(\vec{x})\). The gradient \(\nabla f_A(\vec{x})\):
+    \[\nabla f_A(\vec{x}) = \left (\frac{\partial f_A}{\partial x_1}(\vec{x}), \frac{\partial f_A}{\partial x_2}(\vec{x}) \right )^T = (-2x_1, -2x_2)\]
+    The stationary point \(\vec{x}_A^*\) of \(f_A(\vec{x})\):
+    \[\vec{x}_A^* = (0, 0)\]
+    The Hessian matrix \(\nabla^2 f_A(\vec{x})\) at the point \(\vec{x} = \vec{x}_A^*\):
+    \[
+        \nabla^2 f_A(\vec{x}_A^*) =
+        \begin{pmatrix}
+            \frac{\partial^2 f_A}{\partial x_1^2}(\vec{x}^*_A) &
+            \frac{\partial^2 f_A}{\partial x_1 \partial x_2}(\vec{x}^*_A) \\
+            \frac{\partial^2 f_A}{\partial x_2 \partial x_1}(\vec{x}^*_A) &
+            \frac{\partial^2 f_A}{\partial x_2^2}(\vec{x}^*_A)
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            -2 & 0 \\
+            0 & -2
+        \end{pmatrix}
+    \]
+    The eigenvalues of \(\nabla^2 f_A(\vec{x}^*_A)\):
+    \[\lambda_1 = \lambda_2 = -2\]
+    Since the \(\nabla^2 f_A(\vec{x}_A^*)\) matrix is negative definite (both the eigenvalues are negative) I can conclude that \(\vec{x}^*_A\) is a local maximum of \(f_A(\vec{x})\). The result is confirmed by figures \ref{two-dimensional-function-A-surface} and \ref{two-dimensional-function-A-contours}: you can easily see that the point \(\vec{x}_A^* = (0, 0)\) is a local maximum.\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-A-surface.png}
+        \caption{Graph of the function \(f_A(\vec{x}) = - x_{1}^{2} - x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-A-surface}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-A-contours.png}
+        \caption{Contour plot of the function \(f_A(\vec{x}) = - x_{1}^{2} - x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-A-contours}
+    \end{figure}
+    Let's now focus on the second function: \(f_B(\vec{x})\). The gradient \(\nabla f_B(\vec{x})\):
+    \[\nabla f_B(\vec{x}) = \left (\frac{\partial f_B}{\partial x_1}(\vec{x}), \frac{\partial f_B}{\partial x_2}(\vec{x}) \right )^T = (2x_1, -2x_2)\]
+    The stationary point \(\vec{x}_B^*\) of \(f_B(\vec{x})\):
+    \[\vec{x}_B^* = (0, 0)\]
+    The Hessian matrix \(\nabla^2 f_B(\vec{x})\) at the point \(\vec{x} = \vec{x}_B^*\):
+    \[
+        \nabla^2 f_B(\vec{x}_B^*) =
+        \begin{pmatrix}
+            \frac{\partial^2 f_B}{\partial x_1^2}(\vec{x}^*_B) &
+            \frac{\partial^2 f_B}{\partial x_1 \partial x_2}(\vec{x}^*_B) \\
+            \frac{\partial^2 f_B}{\partial x_2 \partial x_1}(\vec{x}^*_B) &
+            \frac{\partial^2 f_B}{\partial x_2^2}(\vec{x}^*_B)
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 & 0 \\
+            0 & -2
+        \end{pmatrix}
+    \]
+    The eigenvalues of \(\nabla^2 f_B(\vec{x}^*_B)\):
+    \[\lambda_1 = -2\]
+    \[\lambda_2 = 2\]
+    Since the \(\nabla^2 f_B(\vec{x}_B^*)\) has a negative eigenvalue and a positive one, I can conclude that \(\vec{x}^*_B\) is a saddle point of \(f_B(\vec{x})\). The result is confirmed by figures \ref{two-dimensional-function-B-surface} and \ref{two-dimensional-function-B-contours}: you can easily see that the point \(\vec{x}_B^* = (0, 0)\) is a saddle point, indeed it is a minimum in one direction and a maximum in the other direction.\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-B-surface.png}
+        \caption{Graph of the function \(f_B(\vec{x}) = x_{1}^{2} - x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-B-surface}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-B-contours.png}
+        \caption{Contour plot of the function \(f_B(\vec{x}) = x_{1}^{2} - x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-B-contours}
+    \end{figure}
+    Now, let's focus on the third function \(f_C(\vec{x})\). The gradient \(\nabla f_C(\vec{x})\):
+    \[\nabla f_C(\vec{x}) = \left (\frac{\partial f_C}{\partial x_1}(\vec{x}), \frac{\partial f_C}{\partial x_2}(\vec{x}) \right )^T = (2x_1, 0)\]
+    The stationary points \(\vec{x}_C^*\) of \(f_C(\vec{x})\) are all the infinite points:
+    \[\vec{x}_C^* = (0, x_c), x_c \in \R\]
+    The Hessian matrix \(\nabla^2 f_C(\vec{x})\) at the points \(\vec{x} = \vec{x}_C^*\):
+    \[
+        \nabla^2 f_C(\vec{x}_C^*) =
+        \begin{pmatrix}
+            \frac{\partial^2 f_C}{\partial x_1^2}(\vec{x}^*_C) &
+            \frac{\partial^2 f_C}{\partial x_1 \partial x_2}(\vec{x}^*_C) \\
+            \frac{\partial^2 f_C}{\partial x_2 \partial x_1}(\vec{x}^*_C) &
+            \frac{\partial^2 f_C}{\partial x_2^2}(\vec{x}^*_C)
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 & 0 \\
+            0 & 0
+        \end{pmatrix}
+    \]
+    Since \(det(\nabla^2 f_C(\vec{x}_C^*)) = 0\) an higher order test must be used. I can't conclude anything looking only at the eigenvalues of the Hessian matrix. For example, \(x^* = (0, 0)^T\) is a stationary point for both \(f(x_1, x_2) = x_1^2 + x_2^4\) and \(f(x_1, x_2) = x_1^2 - x_2^4\). Moreover, both the functions have the same Hessian matrix at the point \(x^*\). However, \(x^*\) is a local minimum in the first function and a saddle point in the second function. I can therefore say that it's not possible to conclude anything and that some other method must be used.\\
+    The only thing that I can do is looking at the graph of the function \(f_C(\vec{x})\) (see figures \ref{two-dimensional-function-C-surface} and \ref{two-dimensional-function-C-contours}). You can easily see that the points \(\vec{x}^*\) are all minima: the function increases in one direction, and is constant in the other direction.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-C-surface.png}
+        \caption{Graph of the function \(f_C(\vec{x}) = x_{1}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-C-surface}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-two-dimensional-function-C-contours.png}
+        \caption{Contour plot of the function \(f_C(\vec{x}) = x_{1}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [5, +5]\)}
+        \label{two-dimensional-function-C-contours}
+    \end{figure}
