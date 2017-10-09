@@ -25,7 +25,7 @@ X1, X2 = np.meshgrid(X1, X2)
 Y = X1**2 + X2**2
 ax.plot_surface(X1, X2, Y, rstride=1, cstride=1, linewidth=0, antialiased=False, cmap='inferno')
 # Save the current figure
-plt.savefig('../Images/01-two-dimensional-function-surface.png')
+plt.savefig('../Images/02-two-dimensional-function-1-surface.png')
 
 # Create a new figure
 fig = plt.figure()
@@ -41,7 +41,7 @@ ax.set_ylabel('$x_2$')
 levels_number = 100
 ax.contourf(X1, X2, Y, levels_number, cmap='inferno')
 # Save the current figure
-plt.savefig('../Images/01-two-dimensional-function-contours.png')
+plt.savefig('../Images/02-two-dimensional-function-1-contours.png')
 
 # Compute the derivatives of the 2D function with respect to each dimension
 gradient_X1, gradient_X2 = np.gradient(Y)
@@ -62,7 +62,7 @@ ax_gradient_X1.view_init(azim=330)
 # Plot a surface with a solid linestyle connecting all the vertices
 ax_gradient_X1.plot_surface(X1, X2, gradient_X1, rstride=1, cstride=1, linewidth=0, antialiased=False, cmap='inferno')
 # Save the current figure
-plt.savefig('../Images/01-two-dimensional-function-gradient-X1.png')
+plt.savefig('../Images/02-two-dimensional-function-1-gradient-X1.png')
 
 # Create a new figure
 fig = plt.figure()
@@ -79,4 +79,4 @@ ax_gradient_X2.set_zlabel(r'$\frac{\partial f}{\partial x_1}(x_1, x_2)$')
 ax_gradient_X2.view_init(azim=330)
 # Plot a surface with a solid linestyle connecting all the vertices
 ax_gradient_X2.plot_surface(X1, X2, gradient_X2, rstride=1, cstride=1, linewidth=0, antialiased=False, cmap='inferno')
-plt.savefig('../Images/01-two-dimensional-function-gradient-X2.png')
+plt.savefig('../Images/02-two-dimensional-function-1-gradient-X2.png')
