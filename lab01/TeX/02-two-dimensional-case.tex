@@ -92,7 +92,8 @@
     \begin{itemize}
         \item the stationary point is a local maximum if and only if the number of negative eigenvalues is \(n\) (or, equivalently, if the Hessian matrix is negative definite);
         \item the stationary point is a local minimum if and only if the number of positive eigenvalues is \(n\) (or equivalently, if the Hessian matrix is positive definite);
-        \item otherwise, the stationary point is a saddle point (that is, a point which is a maximum in some directions and a minimum in others).
+        \item the stationary point is a saddle point (that is, a point which is a maximum in some directions and a minimum in others) if the determinant of the function is negative;
+        \item it's not possible to conclude anything if the determinant of the function is zero.
     \end{itemize}
     Since we have found out that the eigenvalues \(\lambda_1\) and \(\lambda_2\) of \(f(\vec{x}^*)\) are positive, we conclude that \(\vec{x}^* = (0, 0)^T\) is a local minimum of \(f(\vec{x})\). The figure \ref{two-dimensional-function-1-surface} clearly shows that the result is correct.\par
     Assume that \(\vec{x} = (x_1, x_2)^T \in \R^2\). I am now interested in studying the following functions:
