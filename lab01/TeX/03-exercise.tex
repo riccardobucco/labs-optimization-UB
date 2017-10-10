@@ -1,0 +1,93 @@
+\section{The exercise}
+    Assume that \(\vec{x} = (x_1, x_2)^T \in \R^2\). In the proposed exercise I have to study the following function:
+    \[f(\vec{x}) = x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^44) + x_1x_2 + x_2^2(-4 + 4x_2^2)\]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-exercise-function-surface.png}
+        \caption{Graph of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+        \label{exercise-function-surface}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-exercise-function-contours.png}
+        \caption{Graph of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+        \label{exercise-function-contours}
+    \end{figure}
+    First of all, I plotted the the function, in order to have an idea of where the stationary points could be (see figures \ref{exercise-function-surface} and \ref{exercise-function-contours}). Now I can analytically compute the gradient of the function. First of all let's rewrite the function in an easier form:
+    \begin{align*}
+        f(\vec{x}) &= x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2) \\
+        &= \frac{1}{3}x_1^6 - 2.1x_1^4 + 4x_1^2 + x_1x_2 - 4x_2^2 + 4x_2^4
+    \end{align*}
+    The gradient is now simple to compute:
+        \[\nabla f(\vec{x}) = \left (\frac{\partial f}{\partial x_1}(\vec{x}), \frac{\partial f}{\partial x_2}(\vec{x}) \right )^T\]
+        \[\frac{\partial f}{\partial x_1}(\vec{x}) = 2x_1^5 - 8.4x_1^3 + 8x_1 + x_2\]
+        \[\frac{\partial f}{\partial x_2}(\vec{x}) = 16x_2^3 - 8x_2 + x_1\]
+    Now, my purpose is to find those points at which the gradient is close to zero (that is to say, I want to find the stationary points). To perform this task, I'll use some principles of the gradient descent algorithms (which will be analyzed in later laboratories).
+    \begin{enumerate}
+        \item First of all, I need to reduce the continuous function \(f(\vec{x})\) to a discrete function. I can do it by choosing a finite set of values for both \(x_1\) and \(x_2\). I have chosen a small sampling interval (\(0.01\)).
+            \[x_1 \in \{-2, -1.99, -1.98, ..., +1.98, +1.99, +2\}\]
+            \[x_2 \in \{-1, -0.99, -0.98, ..., +0.98, +0.99, +1\}\]
+        \item Evaluate \(\norm{\nabla f(\vec{x})}^2\) for every point \(\vec{x} = (x_1, x_2)^T\).
+        \item Using brute force, search for those points \(\vec{\tilde{x}}\) at which the value of \(\norm{\nabla f(\vec{\tilde{x}})}^2\) is strictly smaller than the value of its neighbors. In other words, given a point \(\vec{\tilde{x}} = (\tilde{x}_1, \tilde{x}_2)^T\), I have to check if it's true that:
+        \begin{itemize}
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1-0.01, \tilde{x}_2-0.01)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1-0.01, \tilde{x}_2)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1-0.01, \tilde{x}_2+0.01)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1, \tilde{x}_2-0.01)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1, \tilde{x}_2+0.01)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1+0.01, \tilde{x}_2-0.01)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1+0.01, \tilde{x}_2)^T)}^2\)
+            \item \(\norm{\nabla f(\vec{\tilde{x}})}^2 \le \norm{\nabla f((\tilde{x}_1+0.01, \tilde{x}_2+0.01)^T)}^2\)
+        \end{itemize}
+    \end{enumerate}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-exercise-function-contours-with-stationary-points.png}
+        \caption{Stationary points of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+        \label{exercise-function-contours-with-stationary-points}
+    \end{figure}
+    You can look at figure \ref{exercise-function-contours-with-stationary-points} to check which are the stationary points that I found out using this simple technique. If you check which are the values of \(\norm{\nabla f(\vec{\tilde{x}})}^2\) you can easily see that they are really close to zero. This is perfectly reasonable: if \(\vec{\tilde{x}}\) is a stationary point of \(f(\vec{x})\) then I expect that \(\nabla f(\vec{\tilde{x}}) = (0, 0)^T\), and \(\norm{(0,0)^T}^2 = 0\).\par
+    I can now try to compute the Hessian matrix at the values \(\vec{\tilde{x}}\) that I have previously found. After that, I can compute the eigenvalues of each matrix and try to conclude something about the stationary point. First of all, let's compute all the second partial derivatives of \(f(\vec{x})\):
+    \[\frac{\partial^2 f}{\partial x_1^2}(\vec{x}) = 10x_1^4 - 25.2x_1^2 + 8\]
+    \[\frac{\partial^2 f}{\partial x_1 \partial x_2}(\vec{x}) = \frac{\partial^2 f}{\partial x_1 \partial x_2}(\vec{x}) = 1\]
+    \[\frac{\partial^2 f}{\partial x_2^2}(\vec{x}) = 48x_2^2 - 8\]
+    The Hessian matrix of a general point \(\vec{x} = (x_1, x_2)^T\) is:
+    \[
+        \nabla^2 f(\vec{x}) =
+        \begin{pmatrix}
+            \frac{\partial^2 f}{\partial x_1^2}(\vec{x}) &
+            \frac{\partial^2 f}{\partial x_1 \partial x_2}(\vec{x}) \\
+            \frac{\partial^2 f}{\partial x_2 \partial x_1}(\vec{x}) &
+            \frac{\partial^2 f}{\partial x_2^2}(\vec{x})
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            10x_1^4 - 25.2x_1^2 + 8 & 1 \\
+            1 & 48x_2^2 - 8
+        \end{pmatrix}
+    \]
+    I can now compute all the Hessian matrices of the stationary points. After that, I can find out the eigenvalues of the matrices: they can be useful to understand if a stationary point \(\vec{\tilde{x}}\) is a local maximum, a local minimum or none of them. Table \ref{hessian-matrices-and-eigenvalues} summarizes the results that I got.
+    \begin{table}
+        \centering
+        \begin{tabu}{| c | c | c |}
+            \hline
+            \(\vec{\tilde{x}}\) &                           \(\nabla^2 f(\vec{\tilde{x}})\) &                           \(\lambda_1\), \(\lambda_2\) \\ \hline \hline
+            \(\begin{pmatrix}0.92\\-0.76\end{pmatrix}\) &   \(\begin{pmatrix}-6.16535&1\\1&19.72480\end{pmatrix}\) &    \(\lambda_1 = -6.20392\), \(\lambda_2 = 19.76337\) \\ \hline
+            \(\begin{pmatrix}0.09\\-0.71\end{pmatrix}\) &   \(\begin{pmatrix}7.79654&1\\1&16.19680\end{pmatrix}\) &     \(\lambda_1 = 7.67913\), \(\lambda_2 = 16.31420\) \\ \hline
+            \(\begin{pmatrix}-1.01\\-0.63\end{pmatrix}\) &  \(\begin{pmatrix}-7.30048&1\\1&11.05120\end{pmatrix}\) &    \(\lambda_1 = -7.35481\), \(\lambda_2 = 11.10553\) \\ \hline
+            \(\begin{pmatrix}-0.98\\-0.13\end{pmatrix}\) &  \(\begin{pmatrix}-6.97840&1\\1&-7.18880\end{pmatrix}\) &    \(\lambda_1 = -6.07808\), \(\lambda_2 = -8.08912\) \\ \hline
+            \(\begin{pmatrix}0.00\\0.00\end{pmatrix}\) &    \(\begin{pmatrix}8.00000&1\\1&-8.00000\end{pmatrix}\) &     \(\lambda_1 = 8.06226\), \(\lambda_2 = -8.06226\) \\ \hline
+            \(\begin{pmatrix}0.98\\0.13\end{pmatrix}\) &    \(\begin{pmatrix}-6.97840&1\\1&-7.18880\end{pmatrix}\) &    \(\lambda_1 = -6.07808\), \(\lambda_2 = -8.08912\) \\ \hline
+            \(\begin{pmatrix}1.01\\0.63\end{pmatrix}\) &    \(\begin{pmatrix}-7.30048&1\\1&11.05120\end{pmatrix}\) &    \(\lambda_1 = -7.35481\), \(\lambda_2 = 11.10553\) \\ \hline
+            \(\begin{pmatrix}-0.09\\0.71\end{pmatrix}\) &   \(\begin{pmatrix}7.79654&1\\1&16.19680\end{pmatrix}\) &     \(\lambda_1 = 7.67913\), \(\lambda_2 = 16.31420\) \\ \hline
+            \(\begin{pmatrix}-0.92\\0.76\end{pmatrix}\) &   \(\begin{pmatrix}-6.16535&1\\1&19.72480\end{pmatrix}\) &    \(\lambda_1 = -6.20392\), \(\lambda_2 = 19.76337\) \\ \hline
+        \end{tabu}
+        \caption{Hessian matrix (and its respective eigenvalues) of each stationary point \(\vec{\tilde{x}}\) of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_2^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\)}
+        \label{hessian-matrices-and-eigenvalues}
+    \end{table}
+    It's easy to see that there are no matrices whose determinant is zero (in that case I can't conclude anything about the nature of the stationary point, as I said earlier in the report). So you just have to look at the eigenvalues of the Hessian matrix of each point:
+    \begin{itemize}
+        \item if the eigenvalues are both positive then the stationary point \(\vec{\tilde{x}}\) is a local minimum;
+        \item if the eigenvalues are both negative then the stationary point \(\vec{\tilde{x}}\) is a local maximum;
+        \item otherwise the stationary point \(\vec{\tilde{x}}\) is saddle point.
+    \end{itemize}
