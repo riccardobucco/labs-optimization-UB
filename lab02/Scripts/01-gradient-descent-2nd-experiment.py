@@ -98,4 +98,4 @@ points = gradientDescent(x0, ALPHA, myFunction, myFunctionGradient, ITERATIONS)
 ax.plot(points[:,0], points[:,1], COLOR+'o')
 
 # Save the current figure
-plt.savefig('../Images/01-gradient-descent-2nd-experiment-alpha-1.1.png')
+plt.savefig('../Images/01-gradient-descent-2nd-experiment-alpha-1-1.png')

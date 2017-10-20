@@ -27,4 +27,19 @@
                 \label{gradient-descent-1st-experiment}
             \end{figure}
             As you can see in figure \ref{gradient-descent-1st-experiment}, the gradient descent algorithm converges to the minimum, no matter what the starting point is. It's also possible to see that we don't need \(100\) iterations to get really close to the minimum: in the next experiments we could try to find a way to stop the algorithm when it's close to the real minimum.
+            \item In the second experiment I'm going to try different values of \(\alpha\) in order to minimize the function \(f(\vec{x})\) using the gradient descent method. Let's start using \(\alpha = 1\). The starting points are the same that I used in the first experiment: \(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\).
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-2nd-experiment-alpha-1.png}
+                \caption{Gradient descent method applied to the function \(f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from three different points (\(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\)), using \(\alpha = 1\) and performing \(100\) iterations}
+                \label{gradient-descent-2nd-experiment-alpha-1}
+            \end{figure}
+            As you can see in figure \ref{gradient-descent-2nd-experiment-alpha-1}, the method doesn't converge, no matter what is the starting point. Indeed, if \(\vec{x}^0\) is the starting point, the sequence that you get applying the gradient descent method (with \(\alpha = 1\)) is \(\vec{x}^0, -\vec{x}^0, \vec{x}^0, -\vec{x}^0, ...\). Moreover, if we use \(\alpha = 1.1\) to minimize the function \(f(\vec{x})\), the gradient descent method diverges, moving away from the minimum point.
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-2nd-experiment-alpha-1-1.png}
+                \caption{Gradient descent method applied to the function \(f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from the point \(\vec{x}^0 = (4,4)^T\), using \(\alpha = 1.1\) and performing \(12\) iterations}
+                \label{gradient-descent-2nd-experiment-alpha-1-1}
+            \end{figure}
+            Figure \ref{gradient-descent-2nd-experiment-alpha-1-1} represents the case in which \(\vec{x}^0 = (4,4)^T\) is the starting point: you can easily see that the points computed by the gradient descent method move away from the center of the image (the figure shows just the first 12 results of the algorithm). The problem in this approach is that we're trying to make steps which are too big.
         \end{enumerate}
