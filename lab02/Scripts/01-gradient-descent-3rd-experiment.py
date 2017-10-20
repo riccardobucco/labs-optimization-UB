@@ -102,7 +102,7 @@ ax.set_ylabel('$x_2$')
 X1 = np.linspace(INTERVAL_START_X1, INTERVAL_STOP_X1, ((INTERVAL_STOP_X1 - INTERVAL_START_X1) / SAMPLING_INTERVAL) + 1)
 X2 = np.linspace(INTERVAL_START_X2, INTERVAL_STOP_X2, ((INTERVAL_STOP_X2 - INTERVAL_START_X2) / SAMPLING_INTERVAL) + 1)
 X1, X2 = np.meshgrid(X1, X2)
-Y = X1**2 + X2**2
+Y = 100*(X1**2 + X2**2)
 levels_number = 100
 ax.contourf(X1, X2, Y, levels_number, cmap='inferno')
 
@@ -159,7 +159,7 @@ ax.set_ylabel('$x_2$')
 X1 = np.linspace(INTERVAL_START_X1, INTERVAL_STOP_X1, ((INTERVAL_STOP_X1 - INTERVAL_START_X1) / SAMPLING_INTERVAL) + 1)
 X2 = np.linspace(INTERVAL_START_X2, INTERVAL_STOP_X2, ((INTERVAL_STOP_X2 - INTERVAL_START_X2) / SAMPLING_INTERVAL) + 1)
 X1, X2 = np.meshgrid(X1, X2)
-Y = X1**2 + X2**2
+Y = 100*(X1**2 + X2**2)
 levels_number = 100
 ax.contourf(X1, X2, Y, levels_number, cmap='inferno')
 
