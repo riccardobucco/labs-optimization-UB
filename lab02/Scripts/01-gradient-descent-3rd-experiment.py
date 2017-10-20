@@ -86,7 +86,7 @@ for i in range(0, COLORS.size):
     ax.plot(points[:,0], points[:,1], COLORS[i]+'o')
 
 # Save the current figure
-plt.savefig('../Images/01-gradient-descent-3rd-experiment-first-function.png')
+plt.savefig('../Images/01-gradient-descent-3rd-experiment-first-function-alpha-0-0-1.png')
 
 # Create a new figure
 fig = plt.figure()
@@ -113,7 +113,7 @@ for i in range(0, COLORS.size):
     ax.plot(points[:,0], points[:,1], COLORS[i]+'o')
 
 # Save the current figure
-plt.savefig('../Images/01-gradient-descent-3rd-experiment-second-function.png')
+plt.savefig('../Images/01-gradient-descent-3rd-experiment-second-function-alpha-0-0-1.png')
 
 # Change the value of alpha (to be used for the normalized gradient descent method)
 ALPHA = 0.1
@@ -143,7 +143,7 @@ for i in range(0, COLORS.size):
     ax.plot(points[:,0], points[:,1], COLORS[i]+'o')
 
 # Save the current figure
-plt.savefig('../Images/01-gradient-descent-3rd-experiment-first-function-normalized.png')
+plt.savefig('../Images/01-gradient-descent-3rd-experiment-first-function-normalized-alpha-0-1.png')
 
 # Create a new figure
 fig = plt.figure()
@@ -170,4 +170,4 @@ for i in range(0, COLORS.size):
     ax.plot(points[:,0], points[:,1], COLORS[i]+'o')
 
 # Save the current figure
-plt.savefig('../Images/01-gradient-descent-3rd-experiment-second-function-normalized.png')
+plt.savefig('../Images/01-gradient-descent-3rd-experiment-second-function-normalized-alpha-0-1.png')
