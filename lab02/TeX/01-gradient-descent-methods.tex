@@ -42,4 +42,36 @@
                 \label{gradient-descent-2nd-experiment-alpha-1-1}
             \end{figure}
             Figure \ref{gradient-descent-2nd-experiment-alpha-1-1} represents the case in which \(\vec{x}^0 = (4,4)^T\) is the starting point: you can easily see that the points computed by the gradient descent method move away from the center of the image (the figure shows just the first 12 results of the algorithm). The problem in this approach is that we're trying to make steps which are too big.
+            \item In the third experiment I'm going to use two functions:
+            \[f_1(\vec{x}) = x_{1}^{2} + x_{2}^{2}\]
+            \[f_2(\vec{x}) = 100(x_{1}^{2} + x_{2}^{2})\]
+            You can easily see that, for a given point \(\vec{x} = (x_1, x_2)^T\), both gradients point in the same direction. First, I can try to apply the gradient descent method to both the functions using the same alpha (for example, \(\alpha = 0.01\)).
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-3rd-experiment-first-function-alpha-0-0-1.png}
+                \caption{Gradient descent method applied to the function \(f_1(\vec{x}) = x_{1}^{2} + x_{2}^{2}\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from three different points (\(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\)), using \(\alpha = 0.01\) and performing \(100\) iterations}
+                \label{gradient-descent-3rd-experiment-first-function-alpha-0-0-1}
+            \end{figure}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-3rd-experiment-second-function-alpha-0-0-1.png}
+                \caption{Gradient descent method applied to the function \(f_2(\vec{x}) = 100(x_{1}^{2} + x_{2}^{2})\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from three different points (\(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\)), using \(\alpha = 0.01\) and performing \(100\) iterations}
+                \label{gradient-descent-3rd-experiment-second-function-alpha-0-0-1}
+            \end{figure}
+            The results that i get from this experiment are represented in figures \ref{gradient-descent-3rd-experiment-first-function-alpha-0-0-1} and \ref{gradient-descent-3rd-experiment-second-function-alpha-0-0-1}. In the first case (where I'm trying to minimize the \(f_1(\vec{x})\) function), the method slowly converges to the minimum (but it needs more iterations!). In the second case (where I'm trying to minimize the \(f_2(\vec{x})\) function), the method doesn't converge, and I get the sequence \(\vec{x}^0, -\vec{x}^0, \vec{x}^0, -\vec{x}^0, ...\). Looking at these results, I realize that I need different values of \(\alpha\) to minimize different functions.\par
+            When you have two functions such that their gradients point in the same direction, you can use the normalized gradient as the descent direction:
+            \[\vec{x}^{k+1} = \vec{x}^k - \alpha^k \frac{\nabla f(\vec{x}^k)}{\norm{\nabla f(\vec{x}^k)}}\]
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-3rd-experiment-first-function-normalized-alpha-0-1.png}
+                \caption{Gradient descent method applied to the function \(f_1(\vec{x}) = x_{1}^{2} + x_{2}^{2}\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from three different points (\(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\)), using \(\alpha = 0.1\) and performing \(100\) iterations}
+                \label{gradient-descent-3rd-experiment-first-function-normalized-alpha-0-1}
+            \end{figure}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-3rd-experiment-second-function-normalized-alpha-0-1.png}
+                \caption{Gradient descent method applied to the function \(f_2(\vec{x}) = 100(x_{1}^{2} + x_{2}^{2})\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)), starting from three different points (\(\vec{x}^0 = (4,4)^T\), \(\vec{x}^0 = (-3,2)^T\) and \(\vec{x}^0 = (4,-3)^T\)), using \(\alpha = 0.1\) and performing \(100\) iterations}
+                \label{gradient-descent-3rd-experiment-second-function-normalized-alpha-0-1}
+            \end{figure}
+            Using such a method, it's possible to use the same \(\alpha\) value to minimize both \(f_1(\vec{x})\) and \(f_2(\vec{x})\). You can see an example in figures \ref{gradient-descent-3rd-experiment-first-function-normalized-alpha-0-1} and \ref{gradient-descent-3rd-experiment-second-function-normalized-alpha-0-1}: the normalized gradient descent method is applied to both the functions, using \(\alpha = 0.1\).
         \end{enumerate}
