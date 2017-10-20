@@ -75,3 +75,26 @@
             \end{figure}
             Using such a method, it's possible to use the same \(\alpha\) value to minimize both \(f_1(\vec{x})\) and \(f_2(\vec{x})\). You can see an example in figures \ref{gradient-descent-3rd-experiment-first-function-normalized-alpha-0-1} and \ref{gradient-descent-3rd-experiment-second-function-normalized-alpha-0-1}: the normalized gradient descent method is applied to both the functions, using \(\alpha = 0.1\).
         \end{enumerate}
+    \subsection{The exercise of first laboratory}
+        Let's \(\vec{x} \in \R^2\), \(\vec{x} = (x_1, x_2)^T\). I now focus on the following two dimensional function:
+        \[f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\]
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-contours.png}
+            \caption{Contour plot of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+            \label{gradient-descent-1st-lab-function-contours}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-surface.png}
+            \caption{Graph of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+            \label{gradient-descent-1st-lab-function-surface}
+        \end{figure}
+        I can plot the function to have an idea of its main features (see figures \ref{gradient-descent-1st-lab-function-contours} and \ref{gradient-descent-1st-lab-function-surface}). You can easily see that the function has several minima. Which minimum will be found using a gradient descent method? It depends on the starting point! I can try to perform a simple experiment to check whether my answer is correct or not: I can apply the gradient descent method to the function, using a constant value of \(\alpha\) (\(\alpha = 0.05\)) and trying to change the starting point.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-1st-experiment.png}
+            \caption{Gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)), starting from three different points (\(\vec{x}^0 = (-0.6,4)^T\), \(\vec{x}^0 = (0,0.3)^T\) and \(\vec{x}^0 = (-1.1,0)^T\)), using \(\alpha = 0.05\) and performing \(100\) iterations}
+            \label{gradient-descent-1st-lab-function-1st-experiment}
+        \end{figure}
+        As you can see in figure \ref{gradient-descent-1st-lab-function-1st-experiment}, depending on the starting points I will have different results.\par
