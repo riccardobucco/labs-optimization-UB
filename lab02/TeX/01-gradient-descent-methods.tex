@@ -14,8 +14,8 @@
             \caption{Graph of the function \(f(\vec{x}) = x_{1}^{2} + x_{2}^{2}\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [-5, +5]\)}
             \label{gradient-descent-simple-function-surface}
         \end{figure}
-        I can plot the function to have an idea of its main features (see figures \ref{gradient-descent-simple-function-contours} and \ref{gradient-descent-simple-function-surface}). You can easily see that there is a local minimum: how can I find it? The easiest way is by performing a gradient descent. How does this method work? You just have to start with a guess \(\vec{x}^0\) for a local minimum of \(f(\vec{x})\) and than you have to take steps proportional to the negative of the gradient of the function at the current point. In other words, you have to consider the sequence \(x^0, x^1, ..., x^k, x^{k+1}, ...\) such that
-        \[x^{k+1} = x^k - \alpha^k \nabla f(\vec{x})\]
+        I can plot the function to have an idea of its main features (see figures \ref{gradient-descent-simple-function-contours} and \ref{gradient-descent-simple-function-surface}). You can easily see that there is a local minimum: how can I find it? The easiest way is by performing a gradient descent. How does this method work? You just have to start with a guess \(\vec{x}^0\) for a local minimum of \(f(\vec{x})\) and than you have to take steps proportional to the negative of the gradient of the function at the current point. In other words, you have to consider the sequence \(\vec{x}^0, \vec{x}^1, ..., \vec{x}^k, \vec{x}^{k+1}, ...\) such that
+        \[\vec{x}^{k+1} = \vec{x}^k - \alpha^k \nabla f(\vec{x})\]
         \(\alpha^k\) plays an important role since I would like to find the minimum as fast as I can. At the moment, let's keep it constant.\par
         Let's perform now some experiments.
         \begin{enumerate}
