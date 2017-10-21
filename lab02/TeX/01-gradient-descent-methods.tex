@@ -137,3 +137,55 @@
             \label{gradient-descent-1st-lab-function-2nd-experiment}
         \end{figure}
         See the results in table \ref{gradient-descent-1st-lab-function-2nd-experiment-results} and a graphical representation in figure \ref{gradient-descent-1st-lab-function-2nd-experiment}. It's important to say that this method is not necessarily faster than the normal gradient descent method: it's true that it performs less iterations, but at each iteration it has to compute a proper value of \(\alpha^k\)!
+    \subsection{The Rosenbrock function}
+        Let's \(\vec{x} \in \R^2\), \(\vec{x} = (x_1, x_2)^T\), \(a,b \in \R\). I now focus on the following two dimensional function (Rosenbrock function):
+        \[f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\]
+        The function has a global minimum at \((x_1, x_2) = (a, a^2)\). This minimum is inside a long, narrow, parabolic shaped valley. Let's try to study the case in which \(a=1\) and \(b=100\).
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-surface.png}
+            \caption{Graph of the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\))}
+            \label{rosenbrock-function-surface}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours.png}
+            \caption{Contour plot of the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\))}
+            \label{rosenbrock-function-contours}
+        \end{figure}
+        First of all I can plot the function, so that I can have an idea of its main features (see figures \ref{rosenbrock-function-surface} and \ref{rosenbrock-function-contours}). Now, I want to apply the backtracking gradient descent method in order to find the global minimum of the function. The starting points of the algorithm will be \(\vec{x}_A^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\).
+        \begin{table}
+            \centering
+            \begin{tabu}{| c | c | c |}
+                \hline
+                Starting point &                    Threshold &     Iterations \\ \hline \hline
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &   0.001 &         8 \\ \hline
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &   0.00001 &       210 \\ \hline
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &   0.0000001 &     644 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &    0.001 &         9 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &    0.00001 &       34 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &    0.0000001 &     595 \\ \hline
+            \end{tabu}
+            \caption{Backtracking gradient descent method applied to two different starting points and using different thresholds}
+            \label{backtracking-algorithm-experiments-results}
+        \end{table}
+        The results that I got are summed up in table \ref{backtracking-algorithm-experiments-results}.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-threshold-001.png}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from two different points (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\) and using a threshold of \(0.001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-threshold-001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-threshold-00001.png}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from two different points (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\) and using a threshold of \(0.00001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-threshold-00001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-threshold-0000001.png}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from two different points (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\) and using a threshold of \(0.0000001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-threshold-0000001}
+        \end{figure}
+        The main problem of this approach can be seen in figure \ref{rosenbrock-function-contours-threshold-001}, \ref{rosenbrock-function-contours-threshold-00001} and \ref{rosenbrock-function-contours-threshold-0000001}: the approach seems to work but it has many problems! The direction in which the method search the minimum is the right one, but it converges really slowly. Moreover, even if we use small thresholds, we are not able to arrive close to the desired point, because the steps that the method performs are really small and therefor the method stops before arriving close to the minimum. I can conclude that it's not always a good idea to use \(|f(\vec{x}^{k+1}) - f(\vec{x}^k)| < threshold\) as a termination condition for the developed method.
