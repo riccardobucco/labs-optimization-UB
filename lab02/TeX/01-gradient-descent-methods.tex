@@ -189,3 +189,75 @@
             \label{rosenbrock-function-contours-threshold-0000001}
         \end{figure}
         The main problem of this approach can be seen in figure \ref{rosenbrock-function-contours-threshold-001}, \ref{rosenbrock-function-contours-threshold-00001} and \ref{rosenbrock-function-contours-threshold-0000001}: the approach seems to work but it has many problems! The direction in which the method search the minimum is the right one, but it converges really slowly. Moreover, even if we use small thresholds, we are not able to arrive close to the desired point, because the steps that the method performs are really small and therefor the method stops before arriving close to the minimum. I can conclude that it's not always a good idea to use \(|f(\vec{x}^{k+1}) - f(\vec{x}^k)| < threshold\) as a termination condition for the developed method.
+    \subsection{The line search algorithm}
+        Let's now compare the results that I got using the method that I developed with the results that you can get using a built-in function provided by SciPy. For example, let's use the function
+        \[f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\]
+        with \(\vec{x} \in \R^2\), \(\vec{x} = (x_1, x_2)^T\). In a previous section I tried to apply the backtracking algorithm to this function, starting from two different points: \(\vec{x}_B^0 = (1,0)^T\) and \(\vec{x}_B^0 = (0.6, -0.3)^T\) (see table \ref{gradient-descent-1st-lab-function-2nd-experiment-results} to check the results that I got in that experiment). Now I can try to apply the line search method provided by SciPy starting from the same points, and check whether this method outperforms my method or not.
+        \begin{table}
+            \centering
+            \begin{tabu}{| c | c | c | c |}
+                \hline
+                \multirow{2}{*}{Starting point} &       \multirow{2}{*}{Threshold} &    \multicolumn{2}{|c|}{Iterations}    \\ \cline{3-4}
+                &                                       &                               Backtracking &                      SciPy \\ \hline \hline 
+                \(\vec{x}_A^0 = (1,0)^T\) &             0.001 &                         9 &                                 3 \\ \hline
+                \(\vec{x}_B^0 = (0.6, -0.3)^T\) &       0.001 &                         5 &                                 2 \\ \hline
+            \end{tabu}
+            \caption{Comparison between the backtracking gradient descent method that I developed and the line search algorithm provided by SciPy: both the algorithms are applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) starting from two different points and using a fixed threshold}
+            \label{comparison-backtracking-scipy-results}
+        \end{table}
+        You can check the results of the comparison of the two algorithms in table \ref{comparison-backtracking-scipy-results}. You can easily see that the algorithm provided by SciPy needs less iterations to get close to the minimum.\par
+        Let's now apply the line search method to the Rosenbrock function: I'm interested in comparing the results that I got using the backtracking algorithm and the results that you can get using the built-in functions of Python and SciPy. In a previous section I tried to apply the backtracking algorithm to the Rosenbrock function, starting from two different points: \(\vec{x}_B^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\) (see table \ref{backtracking-algorithm-experiments-results} to check the results that I got in that experiment). Now I can try to apply the line search method provided by SciPy starting from the same points, and check whether this method outperforms my method or not.
+        \begin{table}
+            \centering
+            \begin{tabu}{| c | c | c | c |}
+                \hline
+                \multirow{2}{*}{Starting point} &       \multirow{2}{*}{Threshold} &    \multicolumn{2}{|c|}{Iterations}    \\ \cline{3-4}
+                &                                       &                               Backtracking &                      SciPy \\ \hline \hline 
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &       0.001 &                         8 &                                 59 \\ \hline
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &       0.00001 &                       210 &                               360 \\ \hline
+                \(\vec{x}_A^0 = (-1.5,-0.5)^T\) &       0.0000001 &                     644 &                               1374 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &        0.001 &                         9 &                                 3 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &        0.00001 &                       34 &                                1056 \\ \hline
+                \(\vec{x}_B^0 = (0.5, 2.5)^T\) &        0.0000001 &                     595 &                               2531 \\ \hline
+            \end{tabu}
+            \caption{Comparison between the backtracking gradient descent method that I developed and the line search algorithm provided by SciPy: both the algorithms are applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from two different points (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and \(\vec{x}_B^0 = (0.5, 2.5)^T\)) and using three different thresholds}
+            \label{comparison-backtracking-scipy-rosenbrock-results}
+        \end{table}
+        As you can see in table \ref{comparison-backtracking-scipy-rosenbrock-results}, it's not always true that the line search algorithm by SciPy iterates less than other methods. Does this fact imply that my algorithm is better? No, it doesn't. Indeed, even if line search method needs more iterations, it converges to the desired global minimum point! The backtracking method that I developed needs a really small threshold in order to get close to the minimum (I'm not sure that I can find a reasonable value of that threshold, because it has to be really small): without that value, the backtracking algorithm fails, it doesn't arrive close the the minimum point. On the other hand, the line search algorithm is able to arrive close to the minimum, even if it doesn't use a small threshold.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointA-threshold-001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and using a threshold of \(0.001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointA-threshold-001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointA-threshold-00001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and using a threshold of \(0.00001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointA-threshold-00001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointA-threshold-0000001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_A^0 = (-1.5,-0.5)^T\) and using a threshold of \(0.0000001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointA-threshold-000001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointB-threshold-001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_B^0 = (0.5, 2.5)^T\)) and using a threshold of \(0.001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointB-threshold-001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointB-threshold-00001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_B^0 = (0.5, 2.5)^T\)) and using a threshold of \(0.00001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointB-threshold-00001}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-rosenbrock-function-contours-line-search-pointB-threshold-0000001.png}
+            \caption{Line search method (SciPy) applied to the function \(f(\vec{x}) = (a - x_1)^2 + b(x_2 - x_1^2)^2\) (with \(x_1 \in [-2, +2]\), \(x_2 \in [-1, +3]\), \(a=1\) and \(b=100\)), starting from the point (\(\vec{x}_B^0 = (0.5, 2.5)^T\)) and using a threshold of \(0.0000001\) to stop the algorithm}
+            \label{rosenbrock-function-contours-line-search-pointB-threshold-000001}
+        \end{figure}
+        Some of the results can be seen in figures \ref{rosenbrock-function-contours-line-search-pointA-threshold-001}, \ref{rosenbrock-function-contours-line-search-pointA-threshold-00001}, \ref{rosenbrock-function-contours-line-search-pointA-threshold-000001}, \ref{rosenbrock-function-contours-line-search-pointB-threshold-001}, \ref{rosenbrock-function-contours-line-search-pointB-threshold-00001} and \ref{rosenbrock-function-contours-line-search-pointB-threshold-000001}.
