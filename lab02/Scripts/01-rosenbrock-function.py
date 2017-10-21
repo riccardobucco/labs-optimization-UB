@@ -111,7 +111,6 @@ for threshold_index, threshold in enumerate(THRESHOLDS):
     for i in range(0, COLORS.size):
         x0 = STARTING_POINTS[i]
         points = gradientDescentWithDynamicAlpha(x0, myFunction, myFunctionGradient, MAX_ITERATIONS, threshold)
-        print(points.shape)
         ax.plot(points[:,0], points[:,1], COLORS[i])
     # Save the current figure
     plt.savefig('../Images/01-rosenbrock-function-contours-threshold-'+THRESHOLDS_NAMES[threshold_index]+'.png')
