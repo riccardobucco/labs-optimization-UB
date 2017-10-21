@@ -98,3 +98,42 @@
             \label{gradient-descent-1st-lab-function-1st-experiment}
         \end{figure}
         As you can see in figure \ref{gradient-descent-1st-lab-function-1st-experiment}, depending on the starting points I will have different results.\par
+        Let's now perform an improvement to the previous algorithm: I want to try to adapt the value of \(\alpha^k\) at each iteration. A simple backtracking algorithm could try to find a proper value of \(\alpha^k\) in the following way:
+        \begin{lstlisting}[language=Python]
+            def findAlpha(xk):
+                alpha = 1.0
+                while function(xk-alpha*function_gradient(xk)) >= function(xk):
+                    alpha = alpha / 2
+                return alpha
+            def gradientDescentWithDynamicAlpha(x0, max_iterations, threshold):
+                xk = x0
+                alpha = findAlpha(xk)
+                xk1 = xk - alpha*function_gradient(xk)
+                i = 1
+                while (i < max_iterations) &
+                      (abs(function(xk1) - function(xk)) > threshold):
+                    xk = xk1
+                    alpha = findAlpha(xk)
+                    xk1 = xk - alpha*function_gradient(xk)
+                    i = i + 1
+                return np.array(points)
+        \end{lstlisting}
+        The proposed method stops when \(|f(\vec{x}^{k+1}) - f(\vec{x}^k)| < threshold\), so it could be that it performs less than 100 iterations. Indeed, if I try to apply the algorithm to two different starting point \(\vec{x}_A^0 = (1,0)^T\) and \(\vec{x}_B^0 = (0.6, -0.3)^T\), you can easily see that the method converges faster than the previous one!
+        \begin{table}
+            \centering
+            \begin{tabu}{| c | c | c |}
+                \hline
+                Starting point &                    Threshold &     Iterations \\ \hline \hline
+                \(\vec{x}_A^0 = (1,0)^T\) &         0.001 &         9 \\ \hline
+                \(\vec{x}_B^0 = (0.6, -0.3)^T\) &   0.001 &         5 \\ \hline
+            \end{tabu}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) starting from two different points and using a fixed threshold}
+            \label{gradient-descent-1st-lab-function-2nd-experiment-results}
+        \end{table}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-2nd-experiment.png}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)), starting from two different points (\(\vec{x}_A^0 = (1,0)^T\) and \(\vec{x}_B^0 = (0.6, -0.3)^T\). In order to make the figure clearer, only the first points of each application of the algorithm are plotted.}
+            \label{gradient-descent-1st-lab-function-2nd-experiment}
+        \end{figure}
+        See the results in table \ref{gradient-descent-1st-lab-function-2nd-experiment-results} and a graphical representation in figure \ref{gradient-descent-1st-lab-function-2nd-experiment}. It's important to say that this method is not necessarily faster than the normal gradient descent method: it's true that it performs less iterations, but at each iteration it has to compute a proper value of \(\alpha^k\)!
