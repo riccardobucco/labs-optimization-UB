@@ -1,2 +1,9 @@
 \section{Newton descent method}
-    We have seen two different search directions in the descent methods: the negative of the gradient and the negative of the normalized gradient. What other search directions may we take? One well known search direction is the Newton one.
+    We have seen two different search directions in the descent methods: the negative of the gradient and the negative of the normalized gradient. What other search directions may we take? One well known search direction is the Newton one.\par
+    In a general case, an unconstrained minimization algorithm uses the next algorithm:
+    \[\vec{x}^{k+1} = \vec{x}^k + \alpha^k\vec{d}^k\]
+    where the vector \(\vec{d}^k\) is a descent direction (also called search direction). For the Newton method the descent direction \(\vec{d}^k\) is the solution of
+    \[\nabla^2f(\vec{x}^k)\vec{d}^k = -\nabla f(\vec{x}^k)\]
+    The above equation can be solved as follows:
+    \[\vec{d}^k = (\nabla^2f(\vec{x}^k))^{-1}(-\nabla f(\vec{x}^k))\]
+    As you can easily see, the Newton descent method can be applied only if the Hessian matrix of \(f(\vec{x}^k)\) is invertible.
