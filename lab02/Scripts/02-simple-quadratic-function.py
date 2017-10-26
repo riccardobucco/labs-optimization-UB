@@ -58,11 +58,12 @@ def gradientDescentWithDynamicAlpha(x0, function, function_gradient, max_iterati
 def newtonDescentWithDynamicAlpha(x0, function, function_gradient, function_hessian, max_iterations, threshold):
     points = [x0]
     xk = np.array([[x0[0]], [x0[1]]])
-    alpha = 1
+    alpha = findAlpha(xk, function, function_gradient)
     xk1 = xk + np.dot(alpha*np.linalg.inv(function_hessian(xk)), (-function_gradient(xk)))
     i = 1
     while (i < max_iterations) & (abs(function(xk1) - function(xk)) > threshold):
         xk = xk1
+        alpha = findAlpha(xk, function, function_gradient)
         xk1 = xk + np.dot(alpha*np.linalg.inv(function_hessian(xk)), (-function_gradient(xk)))
         points.append(np.array([xk1[0,0], xk1[1,0]]))
         i = i + 1
