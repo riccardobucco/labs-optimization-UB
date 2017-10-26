@@ -28,11 +28,19 @@ def myFunctionHessian(x):
     hessian = np.array([[200, 0], [0, 2]])
     return hessian
 
-# Function that finds an alpha such that f(xk - alpha*grad(f(xk))) < f(xk)
+# Function that finds an alpha such that f(xk - alpha*grad(f(xk))) <= f(xk)
 # alpha is found starting from 1 and dividing iteratively by 2 until the condition is satisfied 
 def findAlpha(xk, function, function_gradient):
     alpha = 1.0
-    while function(xk - alpha*function_gradient(xk)) >= function(xk):
+    while function(xk - alpha*function_gradient(xk)) > function(xk):
+        alpha = alpha / 2
+    return alpha
+
+# Function that finds an alpha such that f(xk + alpha*(hessian(f(xk)))^(-1)*(-grad(f(xk)))) <= f(xk)
+# alpha is found starting from 1 and dividing iteratively by 2 until the condition is satisfied 
+def findAlphaNewton(xk, function, function_gradient, function_hessian):
+    alpha = 1.0
+    while function(xk + np.dot(alpha*np.linalg.inv(function_hessian(xk)), (-function_gradient(xk)))) > function(xk):
         alpha = alpha / 2
     return alpha
 
@@ -55,15 +63,21 @@ def gradientDescentWithDynamicAlpha(x0, function, function_gradient, max_iterati
         i = i + 1
     return np.array(points)
 
+# Function that implements the Newton descent method, with alpha that changes at every iteration.
+# It requires a starting point, alpha, a function that computes the value of a function in a specified point,
+# a function that computes the gradient of a function in a specified point, a function that computes the
+# Hessian matrix of a function in a specified point, the maximum numberof iterations to perform and a
+# threshold to stop the method.
+# It returns an array of points, where each point is computed using the Newton descent method.
 def newtonDescentWithDynamicAlpha(x0, function, function_gradient, function_hessian, max_iterations, threshold):
     points = [x0]
     xk = np.array([[x0[0]], [x0[1]]])
-    alpha = findAlpha(xk, function, function_gradient)
+    alpha = findAlphaNewton(xk, function, function_gradient, function_hessian)
     xk1 = xk + np.dot(alpha*np.linalg.inv(function_hessian(xk)), (-function_gradient(xk)))
     i = 1
     while (i < max_iterations) & (abs(function(xk1) - function(xk)) > threshold):
         xk = xk1
-        alpha = findAlpha(xk, function, function_gradient)
+        alpha = findAlphaNewton(xk, function, function_gradient, function_hessian)
         xk1 = xk + np.dot(alpha*np.linalg.inv(function_hessian(xk)), (-function_gradient(xk)))
         points.append(np.array([xk1[0,0], xk1[1,0]]))
         i = i + 1
