@@ -7,3 +7,47 @@
     The above equation can be solved as follows:
     \[\vec{d}^k = (\nabla^2f(\vec{x}^k))^{-1}(-\nabla f(\vec{x}^k))\]
     As you can easily see, the Newton descent method can be applied only if the Hessian matrix of \(f(\vec{x}^k)\) is invertible.
+    \subsection{A simple quadratic function}
+        Let's \(\vec{x} \in \R^2\), \(\vec{x} = (x_1, x_2)^T\). I start by focusing on a simple two dimensional quadratic function:
+        \[f(\vec{x}) = 100x_1^2 + x_2^2\]
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/02-simple-quadratic-function-countours.png}
+            \caption{Contour plot of the function \(f(\vec{x}) = 100x_1^2 + x_2^2\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [-50, +50]\)}
+            \label{simple-quadratic-function-countours}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/02-simple-quadratic-function-surface.png}
+            \caption{Graph of the function \(f(\vec{x}) = 100x_1^2 + x_2^2\), with \(x_1 \in [-5, +5]\) and \(x_2 \in [-50, +50]\)}
+            \label{simple-quadratic-function-surface}
+        \end{figure}
+        I can plot the function to have an idea of its main features (see figures \ref{simple-quadratic-function-countours} and \ref{simple-quadratic-function-surface}). As you can easily see, this function is convex, and thus it has a unique stationary point which corresponds to the minimum.\par
+        Given a certain starting point \(\vec{x}^0\), I can now try to use the gradient descent algorithm (using the backtracking algorithm that I previously developed in order to find a proper value of \(\alpha^k\) at each iteration) to count the number of steps that are needed in order to find the minimum so that \(|f(\vec{x}^{k+1}) - f(\vec{x}^k)| < 10^{-3}\). After that, I can do the same using the Newton algorithm: in this way it's possible to compare the two different descent methods. Notice that the Newton method just chooses the direction, while the step \(\alpha^k\) is computed at each iteration using the backtracking approach.
+        \begin{table}
+            \centering
+            \begin{tabu}{| c | c | c | c |}
+                \hline
+                \multirow{2}{*}{Starting point} &       \multirow{2}{*}{Threshold} &    \multicolumn{2}{|c|}{Iterations}    \\ \cline{3-4}
+                &                                       &                               Backtracking &                      Newton \\ \hline \hline 
+                \(\vec{x}_A^0 = (4,40)^T\) &            0.001 &                         209 &                               691 \\ \hline
+                \(\vec{x}_B^0 = (-2,-20)^T\) &          0.001 &                         185 &                               603 \\ \hline
+            \end{tabu}
+            \caption{Comparison between the gradient descent method and the Newton descent method: both the algorithms use the backtracking approach to find at each iteration a proper value of \(\alpha^k\), they are both applied to the function \(f(\vec{x}) = 100x_1^2 + x_2^2\) starting from two different points and using a fixed threshold}
+            \label{comparison-gradient-newton-results}
+        \end{table}
+        As you can see in table \ref{comparison-gradient-newton-results}, the Newton method looks slower, compared with the gradient descent method.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/02-simple-quadratic-function-backtracking.png}
+            \caption{Gradient descent method (using a backtracking approach to find a proper value of \(\alpha^k\) at each iteration) applied to the function \(f(\vec{x}) = 100x_1^2 + x_2^2\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-50, +50]\)), starting from two points \(\vec{x}_A^0 = (4,40)^T\) and \(\vec{x}_B^0 = (-2,-20)^T\), and using a fixed threshold}
+            \label{simple-quadratic-function-backtracking}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/02-simple-quadratic-function-newton.png}
+            \caption{Newton descent method (using a backtracking approach to find a proper value of \(\alpha^k\) at each iteration) applied to the function \(f(\vec{x}) = 100x_1^2 + x_2^2\) (with \(x_1 \in [-5, +5]\) and \(x_2 \in [-50, +50]\)), starting from two points \(\vec{x}_A^0 = (4,40)^T\) and \(\vec{x}_B^0 = (-2,-20)^T\), and using a fixed threshold}
+            \label{simple-quadratic-function-newton}
+        \end{figure}
+        However, if you try to plot the path that each method follows in order to arrive to the minimum (see figures \ref{simple-quadratic-function-backtracking} and \ref{simple-quadratic-function-newton}), you can easily see that the direction chosen by the Newton method is the best one, while the gradient descent method takes many non optimal directions. You can conclude that the main problem of the Newton algorithm that I used in the previous experiment is the backtracking approach with which I choose the step \(\alpha^k\) at each iteration!\par
+        In order to support this statement, I can try to apply the Newton descent method using \(\alpha^k = 1\) at each iteration: the minimum is found after 2 steps! This is due to the fact that the function \(f(\vec{x})\) we are studying is quadratic, and the Newton algorithm approximates it with a quadratic function (that is, the approximation is perfect).
