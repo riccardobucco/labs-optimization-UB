@@ -102,4 +102,4 @@ for j in range(0, points.shape[0]):
 # Plot the global minimum of the function
 ax.plot(A, A**2, 'yo')
 # Save the current figure
-plt.savefig('../Images/02-rosenbrock-function.png')
+plt.savefig('../Images/02-rosenbrock-function-newton.png')
