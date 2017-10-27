@@ -36,7 +36,7 @@
             \caption{Comparison between the gradient descent method and the Newton descent method: both the algorithms use the backtracking approach to find at each iteration a proper value of \(\alpha^k\), they are both applied to the function \(f(\vec{x}) = 100x_1^2 + x_2^2\) starting from two different points and using a fixed threshold}
             \label{comparison-gradient-newton-results}
         \end{table}
-        As you can see in table \ref{comparison-gradient-newton-results}, the Newton method is definetly faster, compared with the gradient descent method.
+        As you can see in table \ref{comparison-gradient-newton-results}, the Newton method is definitely faster, compared with the gradient descent method.
         \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{../Images/02-simple-quadratic-function-backtracking.png}
@@ -50,3 +50,41 @@
             \label{simple-quadratic-function-newton}
         \end{figure}
         If you try to plot the path that each method follows in order to arrive to the minimum (see figures \ref{simple-quadratic-function-backtracking} and \ref{simple-quadratic-function-newton}), you can easily see that the direction chosen by the Newton method is the best one, while the gradient descent method takes many non optimal directions. The Newton method is really fast in this case because the function \(f(\vec{x})\) we are studying is quadratic, and the Newton algorithm approximates it with a quadratic function (that is, the approximation is perfect).
+        \subsection{The exercise of first laboratory}
+            Let's \(\vec{x} \in \R^2\), \(\vec{x} = (x_1, x_2)^T\). I now focus on the following two dimensional function:
+            \[f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\]
+            Check figures \ref{gradient-descent-1st-lab-function-contours} and \ref{gradient-descent-1st-lab-function-surface} to have an idea of the main features of this function: it is easy to see that the function is not convex and has several minima. I can now try to compare the Newton descent method and the gradient descent method, applying both the algorithms to the function introduced in the first laboratory. There is one problem: it is not always possible to use the Newton method, because the Hessian matrix is not always positive definite. Thus, another approach has to be used if the Hessian is not positive definite. In the next experiment, I'll try to apply the gradient descent method every time that is not possible to apply the Newton method. How can I check if a given matrix is positive definite or not? You just have to compute its eigenvalues and check whether they are all positive or not.\par
+            \begin{lstlisting}[language=Python]
+                def findAlpha(xk):
+                    alpha = 1.0
+                    while function(xk-alpha*gradient(xk)) >= function(xk):
+                        alpha = alpha / 2
+                    return alpha
+                def findAlphaNewton(xk):
+                    alpha = 1.0
+                    while function(xk + alpha*inv(hessian(xk))*(-gradient(xk))) >
+                          function(xk):
+                        alpha = alpha / 2
+                    return alpha
+                def newtonGradientDescent(x0, max_iterations, threshold):
+                    xk = x0
+                    if isPositiveDefinite(hessian(xk)):
+                        alpha = findAlphaNewton(xk)
+                        xk1 = xk + alpha*inv(hessian(xk))*(-gradient(xk))
+                    else:
+                        alpha = findAlpha(xk)
+                        xk1 = xk - alpha*gradient(xk)
+                    i = 1
+                    while (i < max_iterations) &
+                          (abs(function(xk1) - function(xk)) > threshold):
+                        xk = xk1
+                        if isPositiveDefinite(hessian(xk)):
+                            alpha = findAlphaNewton(xk)
+                            xk1 = xk + alpha*inv(hessian(xk))*(-gradient(xk))
+                        else:
+                            alpha = findAlpha(xk)
+                            xk1 = xk - alpha*gradient(xk)
+                        i = i + 1
+            \end{lstlisting}
+            If you try to apply this algorithm to find the minimum, you can easily see that there are high chances that the Newton method is applied when you get close to the minimum. Moreover, this method is clearly faster than the Gradient descent method: indeed, you always apply the Newton method (which is usually faster than the gradient one), except in those cases in which it is not possible to apply it.\par
+            You should note that even if this method usually needs less iterations, it has to compute whether a matrix is positive definite and it has also to invert it! Therefor, for some problems the gradient descent method could be the best option!
