@@ -81,20 +81,20 @@
         \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-contours.png}
-            \caption{Contour plot of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+            \caption{Contour plot of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1.5, +1.5]\)}
             \label{gradient-descent-1st-lab-function-contours}
         \end{figure}
         \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-surface.png}
-            \caption{Graph of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)}
+            \caption{Graph of the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\), with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1.5, +1.5]\)}
             \label{gradient-descent-1st-lab-function-surface}
         \end{figure}
         I can plot the function to have an idea of its main features (see figures \ref{gradient-descent-1st-lab-function-contours} and \ref{gradient-descent-1st-lab-function-surface}). You can easily see that the function has several minima. Which minimum will be found using a gradient descent method? It depends on the starting point! I can try to perform a simple experiment to check whether my answer is correct or not: I can apply the gradient descent method to the function, using a constant value of \(\alpha^k\) (\(\alpha^k = 0.05\)) and trying to change the starting point.
         \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-1st-experiment.png}
-            \caption{Gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)), starting from three different points (\(\vec{x}^0 = (-0.6,4)^T\), \(\vec{x}^0 = (0,0.3)^T\) and \(\vec{x}^0 = (-1.1,0)^T\)), using \(\alpha^k = 0.05\) and performing \(100\) iterations}
+            \caption{Gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1.5, +1.5]\)), starting from three different points (\(\vec{x}^0 = (-0.6,4)^T\), \(\vec{x}^0 = (0,0.3)^T\) and \(\vec{x}^0 = (-1.1,0)^T\)), using \(\alpha^k = 0.05\) and performing \(100\) iterations}
             \label{gradient-descent-1st-lab-function-1st-experiment}
         \end{figure}
         As you can see in figure \ref{gradient-descent-1st-lab-function-1st-experiment}, depending on the starting points I will have different results.\par
@@ -133,7 +133,7 @@
         \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-1st-lab-function-2nd-experiment.png}
-            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1, +1]\)), starting from two different points (\(\vec{x}_A^0 = (1,0)^T\) and \(\vec{x}_B^0 = (0.6, -0.3)^T\). In order to make the figure clearer, only the first points of each application of the algorithm are plotted.}
+            \caption{Backtracking gradient descent method applied to the function \(f(\vec{x}) = x_1^2(4 - 2.1x_1^2 + \frac{1}{3}x_1^4) + x_1x_2 + x_2^2(-4 + 4x_2^2)\) (with \(x_1 \in [-2, +2]\) and \(x_2 \in [-1.5, +1.5]\)), starting from two different points (\(\vec{x}_A^0 = (1,0)^T\) and \(\vec{x}_B^0 = (0.6, -0.3)^T\). In order to make the figure clearer, only the first points of each application of the algorithm are plotted.}
             \label{gradient-descent-1st-lab-function-2nd-experiment}
         \end{figure}
         See the results in table \ref{gradient-descent-1st-lab-function-2nd-experiment-results} and a graphical representation in figure \ref{gradient-descent-1st-lab-function-2nd-experiment}. It's important to say that this method is not necessarily faster than the normal gradient descent method: it's true that it performs less iterations, but at each iteration it has to compute a proper value of \(\alpha^k\)!

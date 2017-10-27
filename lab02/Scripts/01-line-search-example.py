@@ -6,7 +6,7 @@ import scipy.optimize
 
 # function evaluation
 def func(x):
-    return x[0]**2 * (4 - 2.1 * x[0]**2 + 1/3 * x[0]**4) + x[0]*x[1] + x[1]**2 * (-4 + 4 * x[1]**2)
+    return x[0]**2 * (4 - 2.1 * x[0]**2 + 1.0/3 * x[0]**4) + x[0]*x[1] + x[1]**2 * (-4 + 4 * x[1]**2)
     
 # first order derivatives of the function
 def dfunc(x):
