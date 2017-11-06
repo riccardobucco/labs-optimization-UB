@@ -1,0 +1,82 @@
+\section{Least squares}
+    The method of least squares is a standard approach in regression analysis to the approximate solution of overdetermined systems. Using this method, the overall solution minimizes the sum of the squares of the residuals.\par
+    The objective consists of adjusting the parameters of a model function to best fit a data set. A simple data set consists of \(n\) points \((x_i,y_i)\), where \(x_i\) is an independent variable and \(y_i\) is a dependent variable whose value is found by observation. The model function has the form \(f(x,\vec{\beta})\), where \(m\) adjustable parameters are held in the vector \(\vec{\beta}\). The goal is to find the parameter values for the model that best fits the data. The least squares method finds its optimum when the sum Q of squared residuals
+    \[Q = \sum_{i=1}^{n}e_i^2\]
+    is a minimum. A residual is defined as the difference between the actual value of the dependent variable and the value predicted by the model. Each data point has one residual.\par
+    I am proposed to use the Anscombe's datasets to perform some tests. In particular, I have to try to apply two different methods that find the solution to the least squares problem:
+    \begin{itemize}
+        \item \emph{Matrix algebra}, which allows in many cases to find a closed-form solution;
+        \item \emph{Gradient descent}, which in general should be used when you have a non-linear least squares problem without a closed-form solution.
+    \end{itemize}
+    \subsection{Visual analysis of the samples}
+        The first thing that I can do is a visual analysis of the samples of the datasets.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-visual-analysis.png}
+            \caption{Scatter plots of the Anscombe's datasets.}
+            \label{visual-analysis}
+        \end{figure}
+        A scatter plot is really useful to identify the type of relationship (if any) between two quantitative variables. The Anscombe's datasets are famous because they have nearly identical simple descriptive statistics, yet appear very different when graphed (see figure \ref{visual-analysis}).
+        \begin{itemize}
+            \item The first scatter plot (top-left) appears to follow a linear relationship with some variance.
+            \item The second scatter plot (tor-right) fits a neat curve but doesn't follow a linear relationship (it might be a quadratic function).
+            \item The third scatter plot (bottom-left) looks like a tight linear relationship, except for one far outlier.
+            \item The fourth scatter plot (bottom-right) seems to don't indicate any relationship between the variables (except for an outlier).
+        \end{itemize}
+    \subsection{Matrix algebra}
+        The least squares problems that occur in the Anscombe's datasets all have a closed-form solution (that is, you can find a mathematical expression that can be evaluated in a finite number of operations). In particular, it turns out that the solution that minimizes \(Q\) is:
+        \[
+            \begin{bmatrix}
+                \beta_0 \\
+                \beta_1
+            \end{bmatrix}
+            = \left(
+            \begin{bmatrix}
+                1 &     1 &     \cdots &    1 \\
+                x_1 &   x_2 &   \cdots &    x_n \\
+            \end{bmatrix}
+            \cdot
+            \begin{bmatrix}
+                1 &         x_1 \\
+                1 &         x_2 \\
+                \vdots &    \vdots \\
+                1 &         x_n
+            \end{bmatrix}
+            \right)^{-1}
+            \cdot
+            \begin{bmatrix}
+                1 &     1 &     \cdots &    1 \\
+                x_1 &   x_2 &   \cdots &    x_n \\
+            \end{bmatrix}
+            \cdot
+            \begin{bmatrix}
+                y_1 \\
+                y_2 \\
+                \vdots \\
+                y_n
+            \end{bmatrix}
+        \]
+        I can now compute the solution for each of the subsets and try to plot the line accordingly.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-matrix-algebra.png}
+            \caption{Linear regression on the Anscombe's datasets using matrix algebra to find \(\beta\) such that \(Q\) is minimum.}
+            \label{matrix-algebra}
+        \end{figure}
+        As you can see in figure \ref{matrix-algebra}, even if all the datasets have completely different points, they all have nearly identical descriptive statistics (that is, the least square line is always the same). In particular, the values that I found are:
+        \[\beta_0 \approx 3\]
+        \[\beta_1 \approx 0.5\]
+        Moreover, there are some problems related to outliers. It's easy to see them in the third and fourth graph (bottom-left and bottom-right). Indeed, the line doesn't behave as expected in those examples, and it tends to overestimate the results in the third graph and to predict relationships (even if they don't exist) between the variables in the fourth graph.
+    \subsection{Gradient descent method}
+        In many cases (not this one!) the function cannot be written in algebraic form and thus there exists no closed-form solution. In such cases I have to proceed with methods associated to the family of gradient descent.\par
+        In practice, I just have to apply the gradient descent method that I developed in the previous laboratories to the function \(Q\). In order to do that, I have to find which is the gradient of that function:
+        \[\frac{\delta Q}{\delta \beta_0} = \sum_{i=1}^{n}(\beta_0 +\beta_1 x_i - y_i)\]
+        \[\frac{\delta Q}{\delta \beta_1} = \sum_{i=1}^{n}(\beta_0 +\beta_1 x_i - y_i)x_i\]
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-gradient-descent-functions-to-minimize.png}
+            \caption{Gradient descent method applied to the Anscombe's datasets, in order to find the \(\beta\) that minimizes their Q function. The red points are the starting points, the green one is the real minimum.}
+            \label{gradient-descent-functions-to-minimize}
+        \end{figure}
+        I can now try to apply the gradient descent method (for example, the simple one). As a starting point for each of the datasets, I chose just a random point. Fox example, using \(\alpha=0.001\) and performing thousands of iterations you can arrive close enough to the desired point in each dataset (see figure \ref{gradient-descent-functions-to-minimize}).\par
+        In this case, as I already said before, it is not necessary to use the gradient descent method to find an approximate solution, since you can do find a perfect solution using matrix algebra. However, in many cases (for example when the least squares are not linear) this is not possible and you should use some other iterative method.
