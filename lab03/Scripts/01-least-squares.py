@@ -83,7 +83,7 @@ for plot_number in range(1,5):
     points_y = b[0] + points_x * b[1]
     ax.plot(points_x, points_y, 'r')
 # Save the current figure
-plt.savefig('../Images/01-matrix algebra.png')
+plt.savefig('../Images/01-matrix-algebra.png')
 
 # Apply the gradient descent method to solve the least square problems in the given datasets
 INTERVAL_START_B0 = -10
