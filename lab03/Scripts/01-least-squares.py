@@ -58,8 +58,6 @@ for plot_number in range(1,5):
     # Plot the least squares line
     points_x = np.array([min(x[plot_number])-2, max(x[plot_number])+2])
     points_y = b[0] + points_x * b[1]
-    print(points_x)
-    print(points_y)
     ax.plot(points_x, points_y, 'r')
 # Save the current figure
 plt.savefig('../Images/01-matrix algebra.png')
