@@ -1,0 +1,72 @@
+\section{Robust functions}
+    The least squares method has the advantage of having a closed solution. However, the least squares method is known to be sensitive to outliers. You can easily see this problem in the third Anscombe's dataset (see figure \ref{matrix-algebra}): the line doesn't behave as expected and it tends to overestimate the results.\par
+    Without entering into details, a way in which I can proceed is minimizing the function
+    \[Q = \sum_{i=1}^{m}\rho(u)\]
+    where \(u = \beta_0 + \beta_1 x_i - y_i\) is a residual and \(\rho(u)\) is a robust error function. For the least squares method, \(\rho(u) = \frac{1}{2}u^2\), but you can also use other functions, more robust to outliers. In this laboratory, I will focus on two robust functions. The Huber one
+    \[
+        \rho_H(u) =
+        \begin{cases}
+            \frac{1}{2}u^2 &            \text{if } |u| \leq C \\
+            \frac{1}{2}C(2|u| - C) &    \text{if } |u| > C
+        \end{cases}
+    \]
+    and the Cauchy one
+    \[\rho_C(u) = \frac{C^2}{2}log\left(1 + \left(\frac{u}{C}\right)^2\right)\]
+    Notice that I always consider the case in which \(C=1\).\par
+    I can start plotting the least square function \(\rho(u) = \frac{1}{2}u^2\) and trying to compare it with the Huber and Cauchy functions.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-robust-weights-comparison.png}
+        \caption{The weight (``importance'') that is given to each predictor error \(u\) by three different functions: Least Square (red), Huber (blue) and Cauchy (green)}
+        \label{robust-weights-comparison}
+    \end{figure}
+    As you can see in figure \ref{robust-weights-comparison}, the Huber function is identical to the least square one when the residuals are small enough. Moreover, the least square method gives much ``importance'' to the points with big residuals, compared to the other two functions. You can easily conclude that probably the lines resulting from the minimization of the Huber and Cauchy functions will be less sensible to the outliers.\par
+    Then I can minimize the Huber and the Cauchy functions, to check how the lines behave with respect to the points of the dataset. In particular, I am interested in working with the third Anscombe's dataset, whose squares line is really sensible to a single outlier. For example, I can apply the gradient descent method (with backtracking). In order to do that, you need the gradients of the two functions. Since \(Q = \sum_{i=1}^{m}\rho(u)\) is simply a sum of terms, to compute its gradient you just have to sum all the single gradients of the addends (that are defined by the Huber of by the Cuchy function). So, the problem is reduced to find the gradients of the two functions. This is the gradient of the Huber function:
+    \[
+        \frac{\delta\rho_H(u)}{\delta\beta_0} =
+        \begin{cases}
+            u &         \text{if } |u| \leq C \\
+            sign(u) &   \text{if } |u| > C
+        \end{cases}    
+    \]
+    \[
+        \frac{\delta\rho_H(u)}{\delta\beta_1} =
+        \begin{cases}
+            u &                     \text{if } |u| \leq C \\
+            x_i \cdot sign(u) &     \text{if } |u| > C
+        \end{cases}
+    \]
+    On the other hand, this is the gradient of the Cauchy function:
+    \[
+        \frac{\delta\rho_C(u)}{\delta\beta_0} = \frac{u}{\frac{1 + u^2}{C^2}}
+    \]
+    \[
+        \frac{\delta\rho_C(u)}{\delta\beta_1} = \frac{x_i \cdot u}{\frac{1 + u^2}{C^2}}
+    \]
+    Now that I have defined all the functions and the related gradients I can apply the gradient descent method (using backtracking) to both the cases. Notice that I am applying it to the third Anscombe's dataset.
+    \begin{table}
+        \centering
+        \begin{tabu}{| c | c | c | c |}
+            \hline
+            &               Least Squares &     Huber &     Cauchy \\ \hline
+            \(\beta_0\) &   3.0024 &            3.5166 &    3.8635 \\ \hline
+            \(\beta_1\) &   0.4997 &            0.4123 &    0.3634 \\ \hline
+        \end{tabu}
+        \caption{Comparison between the regression coefficients that you get minimizing the Least Squares, the Huber and the Cauchy functions}
+        \label{comparison-coefficients}
+    \end{table}
+    You can check the results that I got on table \ref{comparison-coefficients}.\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-robust-huber-3rd-dataset.png}
+        \caption{Comparison between the least squares line (red) and the Huber one (blu)}
+        \label{least-square-huber-lines-comparison}
+    \end{figure}
+    If you now try to compare the least squares line with the Huber one (see figure \ref{least-square-huber-lines-comparison}), you can easily see that the blue line is closer to the points of the dataset (the slope of the blue line is smaller than the slope of the red one). In this sense, this line is less influenced by the outlier of the dataset and is closer to the ``real'' unknown linear law.\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-robust-cauchy-3rd-dataset.png}
+        \caption{Comparison between the least squares line (red) and the Cauchy one (green)}
+        \label{least-square-cauchy-lines-comparison}
+    \end{figure}
+    On the other hand, if you try to compare the least squares line with the Cauchy line (see figure \ref{least-square-cauchy-lines-comparison}), you can see that the green line is even better! Indeed, the Cauchy line is less influenced by the outliers (figure \ref{robust-weights-comparison} represents the fact that big residuals are given small weights). In this specific case (the third Anscombe's dataset), the line that uses the coefficients computed using the Cauchy function is almost perfect, and is difficult to find a line that interpret better the underlying unknown ``real'' linear law.
