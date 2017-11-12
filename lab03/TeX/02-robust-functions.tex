@@ -21,7 +21,7 @@
         \label{robust-weights-comparison}
     \end{figure}
     As you can see in figure \ref{robust-weights-comparison}, the Huber function is identical to the least square one when the residuals are small enough. Moreover, the least square method gives much ``importance'' to the points with big residuals, compared to the other two functions. You can easily conclude that probably the lines resulting from the minimization of the Huber and Cauchy functions will be less sensible to the outliers.\par
-    Then I can minimize the Huber and the Cauchy functions, to check how the lines behave with respect to the points of the dataset. In particular, I am interested in working with the third Anscombe's dataset, whose squares line is really sensible to a single outlier. For example, I can apply the gradient descent method (with backtracking). In order to do that, you need the gradients of the two functions. Since \(Q = \sum_{i=1}^{m}\rho(u)\) is simply a sum of terms, to compute its gradient you just have to sum all the single gradients of the addends (that are defined by the Huber of by the Cuchy function). So, the problem is reduced to find the gradients of the two functions. This is the gradient of the Huber function:
+    Then I can minimize the Huber and the Cauchy functions, to check how the lines behave with respect to the points of the dataset. In particular, I am interested in working with the third Anscombe's dataset, whose squares line is really sensible to a single outlier. For example, I can apply the gradient descent method (with backtracking). In order to do that, you need the gradients of the two functions. Since \(Q = \sum_{i=1}^{m}\rho(u)\) is simply a sum of terms, to compute its gradient you just have to sum all the single gradients of the addends (that are defined by the Huber of by the Cauchy function). So, the problem is reduced to find the gradients of the two functions. This is the gradient of the Huber function:
     \[
         \frac{\delta\rho_H(u)}{\delta\beta_0} =
         \begin{cases}
@@ -59,7 +59,7 @@
     \begin{figure}
         \centering
         \includegraphics[width=0.7\textwidth]{../Images/02-robust-huber-3rd-dataset.png}
-        \caption{Comparison between the least squares line (red) and the Huber one (blu)}
+        \caption{Comparison between the least squares line (red) and the Huber one (blue)}
         \label{least-square-huber-lines-comparison}
     \end{figure}
     If you now try to compare the least squares line with the Huber one (see figure \ref{least-square-huber-lines-comparison}), you can easily see that the blue line is closer to the points of the dataset (the slope of the blue line is smaller than the slope of the red one). In this sense, this line is less influenced by the outlier of the dataset and is closer to the ``real'' unknown linear law.\par
