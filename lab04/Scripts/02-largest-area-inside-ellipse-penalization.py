@@ -103,4 +103,4 @@ ax.plot(points_x, points_y, 'b')
 # Plot the point that minimized the function (analitycally found)
 ax.plot(np.sqrt(a**2/2), np.sqrt(b**2/2), 'go')
 # Save the current figure
-plt.savefig('../Images/02-function-with-constraints-and-real-minimum.png')
+plt.savefig('../Images/02-penalization.png')
