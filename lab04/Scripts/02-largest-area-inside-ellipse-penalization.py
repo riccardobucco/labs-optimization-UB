@@ -34,6 +34,8 @@ cont = 0
 points_x = []
 points_y = []
 while alpha > tol and cont < 100000:
+    points_x.append(x)
+    points_y.append(y)
     cont += 1
     # Gradient. Point x and y should be over the ellipse.
     # The penalty is used to ensure that the solution is
@@ -53,8 +55,6 @@ while alpha > tol and cont < 100000:
         # Update
         aux_x = x - alpha*grx
         aux_y = y - alpha*gry
-        points_x.append(aux_x)
-        points_y.append(aux_y)
         # Compute new value of the energy
         ellipse = (aux_x**2.0 / a**2.0 + aux_y**2.0 / b**2.0 - 1)
         aux_f = -4.0*aux_x*aux_y + c/2.0 * ellipse**2.0
