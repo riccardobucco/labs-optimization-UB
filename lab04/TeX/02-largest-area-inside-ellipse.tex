@@ -1,0 +1,51 @@
+\section{Largest area inside an ellipse}
+    I want to find the area of the largest rectangle that can be inscribed inside the ellipse
+    \[\frac{x_1^2}{a^2} + \frac{x_2^2}{b^2} = 1\]
+    That is, I want to minimize \(f(\vec{x}) = 4x_1x_2\) with the constraint \(\frac{x_1^2}{a^2} + \frac{x_2^2}{b^2} = 1\).\par
+    The exact solution to the problem is simple to find, since you just have to solve the following set of equations:
+    \[\frac{\partial L}{\partial x_1} = -4x_2 + 2\lambda\frac{x_1}{a^2} = 0\]
+    \[\frac{\partial L}{\partial x_2} = -4x_1 + 2\lambda\frac{x_2}{b^2} = 0\]
+    \[\frac{\partial L}{\partial \lambda} = \frac{x_1^2}{a^2} + \frac{x_2^2}{b^2} - 1 = 0\]
+    The solution to the problem is
+    \[x_1^2 = \frac{a^2}{2}\]
+    \[x_2^2 = \frac{b^2}{2}\]
+    \[\lambda = 2ab\]
+    Now, I want to try to numerically find the solution to this problem, using the gradient descent method. The problem here is that the condition \(\nabla_{\vec{x},\lambda}L(\vec{x},\lambda)=0\) corresponds to a saddle point.\par
+    There are several techniques that allows you to deal with this problem. The first one constructs a new function that ideally has a minimum in the desired point (it uses a penalization term).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-penalization.png}
+        \caption{Contours of the function that we want to minimize (\(f(\vec{x}) = 4x_1x_2\)), an ellipse representing the constraint (\(\frac{x_1^2}{8^2} + \frac{x_2^2}{50^2} = 1\)), a point representing the real minimum that we want to find and a line representing the path followed by the gradient descent method (penalization technique)}
+        \label{penalization}
+    \end{figure}
+    \begin{table}
+        \centering
+        \begin{tabu}{| c | c | c |}
+            \hline
+            &           Analytic solution &   Numerical solution (penalization) \\ \hline
+            \(x_1\) &   5.6569 &                5.7485 \\ \hline
+            \(x_2\) &   35.3553 &               34.7837 \\ \hline
+        \end{tabu}
+        \caption{Penalization technique applied to the \(f(\vec{x}) = 4x_1x_2\) function, with constraint \(\frac{x_1^2}{8^2} + \frac{x_2^2}{50^2} = 1\), starting from the point \((1,1)\) and performing \(10000\) iterations}
+        \label{penalization-example}
+    \end{table}
+    You can see how this method works and the path that it follows in figure \ref{penalization}. The data that are computed by the the method are summarized in table \ref{penalization-example}. To arrive close to the point the method performed \(10000\) iterations: this large number of iterations is due to the fact that the computed points oscillate near the ellipse (if you want to see better this fact you just have to reduce the penalty term), moving forward really slowly.\par
+    The second technique that you can use to deal with the problem of saddle points works by ensuring that the points \(\vec{x}^k\) follow the implicit curve \(h(\vec{x})=0\) at each iteration of the gradient descent.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-projection.png}
+        \caption{Contours of the function that we want to minimize (\(f(\vec{x}) = 4x_1x_2\)), an ellipse representing the constraint (\(\frac{x_1^2}{8^2} + \frac{x_2^2}{50^2} = 1\)), a point representing the real minimum that we want to find and a line representing the path followed by the gradient descent method (projection technique)}
+        \label{projection}
+    \end{figure}
+    \begin{table}
+        \centering
+        \begin{tabu}{| c | c | c |}
+            \hline
+            &           Analytic solution &   Numerical solution (projection) \\ \hline
+            \(x_1\) &   5.65685424949 &         5.65685426941 \\ \hline
+            \(x_2\) &   35.3553390593 &         35.3553389348 \\ \hline
+        \end{tabu}
+        \caption{Projection technique applied to the \(f(\vec{x}) = 4x_1x_2\) function, with constraint \(\frac{x_1^2}{8^2} + \frac{x_2^2}{50^2} = 1\), starting from the point \((1,1)\) and performing \(15\) iterations}
+        \label{projection-example}
+    \end{table}
+    You can see how this method works and the path that it follows in figure \ref{projection}. The data that are computed by the the method are summarized in table \ref{projection-example}. To arrive close to the point the method performed \(15\) iterations: compared to the previous method, this one is really fast! Moreover, the numerical solution is almost identical to the analytic one. I can conclude that, at least in this specific case, the projection technique performs better than the penalization one.
