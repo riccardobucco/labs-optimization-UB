@@ -1,0 +1,13 @@
+\section{Equality constraints: KTT conditions}
+    Let's say that we want to minimize
+    \[f(\vec{x}) = \frac{1}{2}x_1^2 + \frac{1}{2}x_2^2 - x_1x_2 - 3x_2\]
+    \[\text{ such that }\]
+    \[x_1+x_2=3\]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/01-function-with-constraints.png}
+        \caption{Contours of the function that we want to minimize (\(f(\vec{x}) = \frac{1}{2}x_1^2 + \frac{1}{2}x_2^2 - x_1x_2 - 3x_2\)), a line representing the constraint (\(x_1+x_2=3\)) and a point representing the minimum that we want to find}
+        \label{function-with-constraints}
+    \end{figure}
+    Figure \ref{function-with-constraints} represents the problem that I am trying to solve. The function \(f(\vec{x})\) doesn't have a global minimum, but what I am trying to do is find a minimum that satisfies the constraint. The single constraint (\(x_1+x_2=3\)) is a plane in the space and in the figure is represented as a line. Minimizing a constrained function means that I have to find a point of the \(\vec{x}_{min}\) of the plane \(x_1+x_2=3\) such that the value of \(f(\vec{x}_{min})\) is minimum.\par
+    In this specific case it's possible to find the exact solution (represented with a red point in figure \ref{function-with-constraints}) simply solving a set of linear equations.
