@@ -1,0 +1,41 @@
+\section{PCA analysis}
+    Now I focus on the Principal Component Analysis (PCA) problem, that is:
+    \[\max_{\vec{w}} \vec{w}^T\vec{A}\vec{w}\]
+    \[\text{subject to}\]
+    \[\vec{w}^T\vec{w} = 1\]
+    where \(\vec{A}\) is the co-variance matrix of the considered data.\par
+    It's possible to find the analytic solution to the problem: it corresponds to the eigenvector of maximum eigenvalue of the co-variance matrix \(\vec{A}\).\par
+    Now I want to try to find the desired solution numerically, using the projection technique developed in the previous section of the report. First of all, I generate some random samples from a multivariate normal distribution. Note that I used the number \(25101995\) as a seed: if you want to replicate the experiment and obtain the same data you must use it.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-pca-analysis-scatterplot.png}
+        \caption{Scatterplot of a random dataset (use the seed \(25101995\) to replicate the experiment). The blue arrow is the eigenvector of maximum eigenvalue of the co-variance matrix and it corresponds to the first component of PCA.}
+        \label{pca-analysis-scatterplot}
+    \end{figure}
+    Figure \ref{pca-analysis-scatterplot} shows a scatterplot of the data and the analytic solution (that corresponds to the eigenvector of maximum eigenvalue of the co-variance matrix of the data).\par
+    You should now notice that the condition \(\vec{w}^T\vec{w} = 1\) can be written in another form: \(x_1^2+x_2^2=1\), that is a circle (a special type of ellipse).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-pca-analysis-analytical.png}
+        \caption{Contours of the function that we want to maximize (\(f(\vec{w}) = \vec{w}^T\vec{A}\vec{w}\)), a circle representing the constraint (\(\vec{w}^T\vec{w} = 1\)) and a point representing the real maximum that we want to find}
+        \label{pca-analysis-analytical}
+    \end{figure}
+    If you want to visualize the problem I am facing, you can look at the figure \ref{pca-analysis-analytical}: find the maximum point of a function that satisfies a constraint. At the moment, I can't apply the techniques that have been developed in the previous section of the report (for example the projection one), because their goal is to minimize a function, and not to maximize it. But I can change the problem and try to study the opposite of the function: in this way I can focus on finding the minimum instead of finding the maximum.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-pca-analysis-numerical.png}
+        \caption{Contours of the function that we want to minimize (\(g(\vec{w}) = -f(\vec{w}) = -\vec{w}^T\vec{A}\vec{w}\)), a circle representing the constraint (\(\vec{w}^T\vec{w} = 1\)), a point representing the real minimum that we want to find and a line representing the path followed by the gradient descent method (projection technique)}
+        \label{pca-analysis-numerical}
+    \end{figure}
+    \begin{table}
+        \centering
+        \begin{tabu}{| c | c | c |}
+            \hline
+            &           Analytic solution &     Numerical solution (projection) \\ \hline
+            \(w_1\) &   0.7100 &                0.7063 \\ \hline
+            \(w_2\) &   0.7042 &                0.7079 \\ \hline
+        \end{tabu}
+        \caption{Projection technique applied to the \(g(\vec{w}) = -f(\vec{w}) = -\vec{w}^T\vec{A}\vec{w}\) function, with constraint \(\vec{w}^T\vec{w} = 1\), starting from the point \((0.3,0.5)\) and performing \(10000\) iterations}
+        \label{projection-results}
+    \end{table}
+    Now I can apply the projection technique previously developed: you can see the path that it follows in figure \ref{pca-analysis-numerical} and the results in table \ref{projection-results}. The method in this case allows you to arrive really close to the desired result, even if it needs to perform a large number of iterations.
