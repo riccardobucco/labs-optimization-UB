@@ -18,6 +18,10 @@ alpha = 1.0
 # Initial values. DO NOT CHOOSE x = 0, y = 0
 x = 1
 y = 1
+points_x = []
+points_y = []
+points_x.append(x)
+points_y.append(y)
 # Projection of (x,y) over the ellipse. In order to compute the
 # projection we compute the intersection of the line passing
 # through the origin (0,0) and the point (x,y) with the ellipse
@@ -32,12 +36,6 @@ lam = 2.0 * a**2.0 * b**2.0 * (b**2.0 + a**2.0) * x * y / (a**4.0 * y**2.0 + b**
 ellipse = x**2.0 / a**2.0 + y**2.0 / b**2.0 - 1
 f= -4.0*x*y + lam * ellipse
 cont = 0
-print("Initial values:")
-print("\tf = " + str(f))
-print("\tx = " + str(x))
-print("\ty = " + str(y))
-points_x = []
-points_y = []
 while alpha > tol and cont < 100000:
     points_x.append(x)
     points_y.append(y)
@@ -72,10 +70,8 @@ while alpha > tol and cont < 100000:
             alpha=alpha/2.0
 print("Number of iterations: " + str(cont))
 print("Final values:")
-print("\tf = " + str(f))
 print("\tx = " + str(x))
 print("\ty = " + str(y))
-print("\tlambda = " + str(lam))
 print("Correct values:")
 print("\tx = " + str(np.sqrt(a**2.0 / 2.0)))
 print("\ty = " + str(np.sqrt(b**2.0 / 2.0)))
