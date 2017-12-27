@@ -1,0 +1,127 @@
+\section{Implementation of the dual formulation (SVM)}
+    Given a set of training examples, each marked as belonging to one or the other of two categories, a SVM training algorithm builds a model that assigns new examples to one category or the other. The model that is produced is a representation of the examples as points in the space, mapped so that the examples of the separate categories are divided by a clear gap that is as wide as possible. New examples are then mapped into the same space and predicted to belong to a category based on which side of the gap they fall.\par
+    It often happens that the set to discriminate is not linearly separable in that space. In this case, we can allow the points to violate the equations of the separating hyperplane, but we impose a penalty for the violation.\par
+    The original (or primal) problem is often transformed into the dual problem: indeed, if the optimal solution to the dual problem is known, then the optimal solution to the primal problem can be easily computed. The problem that we have to solve is to maximize \(f(\alpha)\):
+    \[f(\alpha) = \sum_{i=1}^{m}\alpha_i - \frac{1}{2}\alpha^T(\vec{Y}\vec{X}^T\vec{X}\vec{Y})\alpha\]
+    subject to the constraints
+    \[\sum_{i=1}^{m}y_i\alpha_i=0\]
+    \[0\leq\alpha_i\leq K\]
+    In the course of Numerical Linear Algebra (that I'm not taking), they learned how to solve the following similar problem: minimize \(f(x)\)
+    \[f(x)=\frac{1}{2}x^T\vec{G}x + g^Tx\]
+    subject to the constraints
+    \[\vec{A}^Tx=b\]
+    \[\vec{C}^Tx\geq d\]
+    What I have to do is to find the similarities of the two problems, so that I can re-use the code that they developed in the other course.\par
+    The code that I'm using is from \emph{Arnau Escapa}. The main function that I'm going to use is part of a larger library that he developed and is called \emph{general\_case\_lu}. It has the following parameters: \emph{G}, \emph{g}, \emph{C}, \emph{d}, \emph{A}, \emph{b}, \emph{x}, \emph{gam}, \emph{lam}, \emph{s}. They are self-explanatory, since Arnau used the same notation that we used in the text of the laboratory.\par
+    In order to be able to apply this function to our case I have to identify the parameters in the problem.
+    \begin{itemize}
+        \item First, I know how to minimize a function, but the problem I'm trying to solve is about maximizing a function. Instead of maximizing \(f(\alpha)\), I can just minimize \(-f(\alpha)= -\sum_{i=1}^{m}\alpha_i + \frac{1}{2}\alpha^T(\vec{Y}\vec{X}^T\vec{X}\vec{Y})\alpha\).
+        \item Then, it's easy to understand that \(G=\vec{Y}\vec{X}^T\vec{X}\vec{Y}\). Notice that \(\vec{Y}\vec{X}^T\vec{X}\vec{Y}\) is symmetric
+        \[(\vec{Y}\vec{X}^T\vec{X}\vec{Y})^T=\vec{Y}^T\vec{X}^T\vec{X}\vec{Y}^T=\vec{Y}\vec{X}^T\vec{X}\vec{Y}\]
+        and semidefinite positive
+        \[x^T\vec{Y}\vec{X}^T\vec{X}\vec{Y}x = (x^T\vec{Y}^T\vec{X}^T)(\vec{X}\vec{Y}x) = (\vec{X}\vec{Y}x)(\vec{X}\vec{Y}x) \geq 0\]
+        \item \(x=\alpha\) and \(g=-\vec{e}\)
+        \item Since there is just one equality, you can easily see that \(p=1\) and that \(\vec{A}=\vec{e}\) and \(b=0\).
+        \item I can rewrite \(0\leq\alpha_i\leq K\) as \(\alpha_i\geq 0\) and \(-\alpha_i\geq-K\). In this way, I can conclude that \(C=(Id | -Id)\) and \(d=(0,0,...,0,-K,-K,...,-K)\). Notice that \(C \in \R^{2m\times m}\) and \(d\in\R^{2m}\).
+        \item I just use some default values for \emph{gam}, \emph{lam} and \emph{s}: \(gam=1\), \(lam = s = \vec{e}\).
+        \item Finally, \emph{x} is just a starting point (the underlying algorithm is iterative and it needs a starting point).
+    \end{itemize}
+
+    \subsection{Experiments with separable data}
+        Now I want to try to perform some simple experiments where the data are separable. For this issue I use a high value for \(K\) (\(K=1000000\)).\par
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-4points.png}
+            \caption{Four points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-4points}
+        \end{figure}
+        In the first experiment I just use 4 points. You can look at the figure \ref{01-lab05-4points} to see that they are clearly linearly separable. I can now try to use the function developed by Arnau to find the hyperplane that is able to separate them. In order to to it, I have to define the points on which the Support Vector Machine will be trained, define all the parameters that the function needs (accordingly to the previous results) and finally call the function.
+        \begin{lstlisting}[language=Python]
+            X = np.array([[0,1,0,1],[1,0,3,2]])
+            Y = np.array([[-1,0,0,0],[0,-1,0,0],[0,0,1,0],[0,0,0,1]])
+            n = X.shape[1]
+            m = 2*n
+            p = 1
+            G = np.dot(np.dot(Y,X.T),np.dot(X,Y))
+            g = -np.ones(n)
+            A = np.reshape(np.diag(Y),(n,1))
+            C = np.c_[np.eye(n),-np.eye(n)]
+            d = np.append(np.zeros(n),np.repeat(-K,n))
+            b = 0
+            x = np.ones(n)
+            gam = np.ones(p)
+            s = np.ones(m)
+            lam = np.ones(m)
+            x_res, k_res, t_res = general_case_lu(G,g,C,d,A,b,x,gam,lam,s)
+        \end{lstlisting}
+        Starting from the results that I get using Arnau's function, I can easily compute the coefficients of the hyperplane \(w\) that is able to separate the data points:
+        \[\vec{w} = \vec{X}\vec{Y}\alpha\]
+        Moreover, the offset \(b\) can be recovered by finding an \(x_i\) on the margin's boundary and solving
+        \[y_i(w\cdot x_i - b)=1 \iff b = w\cdot x_i - y_i\]
+        Notice that in this example there are many \(x_i\) such that \(0\leq\alpha_i\leq K\), so I'm computing the average value of \(b\) (in order to ensure the highest accuracy).
+        I get the following result:
+        \[w = (1,1)\]
+        \[b = -2\]
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-4points-with-line.png}
+            \caption{Hyperplane separating four points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-4points-with-line}
+        \end{figure}
+        As you can see on figure \ref{01-lab05-4points-with-line}, the hyperplane that we found perfectly separate the given points. Moreover, it is exactly where it should be, that is in the "middle" of the given points.\par
+        Let's now try to use more points to check if the approach is still working.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-14points.png}
+            \caption{14 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-14points}
+        \end{figure}
+        Look at figure \ref{01-lab05-14points}: the given points are still clearly linearly separable. I now want my algorithm to find the line that best separate those points. The results that I get are:
+        \[w = (0.5,1)\]
+        \[b = -3.5357\]
+        Notice that the offset \(b\) is always computed as an average.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-14points-with-line.png}
+            \caption{Hyperplane separating 14 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-14points-with-line}
+        \end{figure}
+        Again, the line that the algorithm finds is exactly what I want, that is it's perfectly separating the given points (see figure \ref{01-lab05-14points-with-line}).
+
+    \subsection{Experiments with inseparable data}
+        I can now try to use a set of non perfectly separable points to check whether or not the method is still working.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-16points.png}
+            \caption{16 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-16points}
+        \end{figure}
+        As you can see in figure \ref{01-lab05-16points}, the points are not linearly separable. Which is the line that best fit the given data? At the moment I can still use the same value of \(K\) that I used in the previous experiments (\(K=1000000\)).
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-16points-with-line-K=1000000.png}
+            \caption{Hyperplane separating 16 points on a plane (\(K=1000000\)), each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-16points-with-line-K=1000000}
+        \end{figure}
+        The results of the method are the following:
+        \[w = (0.5,0.75)\]
+        \[b = -3.0167\]
+        Notice that one of the points (\(x_i = (1,5)\)) has not been used to calculate the offset \(b\), since its related \(\alpha_i\) is negative (but really close to zero). You can see the hyperplane that the method found in figure \ref{01-lab05-16points-with-line-K=1000000}.\par
+
+    \subsection{What does happen when you change the value of K?}
+        In a SVM you are searching for two things: a hyperplane with the largest minimum margin, and a hyperplane that correctly separates as many instances as possible. The problem is that you will not always be able to get both things. The K parameter determines how great your desire is for the latter.\par
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-16points-special.png}
+            \caption{16 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+            \label{01-lab05-16points-special}
+        \end{figure}
+        For instance, let's consider the case drawn on picture \ref{01-lab05-16points-special}. You can easily see that the points are linearly separable.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../Images/01-lab05-16points-special-with-line.png}
+            \caption{On the left the hyperplane built using \(K=100\), on the right the hyperplane built using \(K=1000000\)}
+            \label{01-lab05-16points-special-with-line}
+        \end{figure}
+        If you try to calculate the hyperplane that should separate the points you have opposite results, depending on the value of \(K\). As you can see in figure \ref{01-lab05-16points-special-with-line}, a low value of \(K\) gives you a pretty large minimum margin. However, this requires that we neglect the red outlier that we have failed to classify correctly. On the right we are using a high value of \(K\): we are no more neglecting the outlier and thus we end up with a much smaller margin.\par
+        Which of these classifiers is the best? That depends on what the future data you will predict looks like, and most often you don't know that of course. Depending on your data set, changing \(K\) may or may not produce a different hyperplane.
