@@ -1,0 +1,62 @@
+\section{Stochastic gradient descent}
+    We can also solve the previous problem using the primal formulation: intuitively, the primal optimization should be better than the other one, since it directly minimizes the quantity I am interested in. The function that I have to minimize is the following:
+    \[f(\vec{w}, b) = \frac{\lambda}{2}\vec{w}^t\vec{w} + \sum_{i=0}^{m}max(0,1-y_i(\vec{w}^Tx_i+b))\]
+    Instead of using the normal gradient descent method or the Newton one, I can try to use the so called stochastic gradient descent method, which is a simplification of the gradient descent: instead of computing the gradient of the previous function using all the terms of the sum, each iteration estimates the gradient of \(f(\vec{w}, b)\) on the basis of a single randomly picked example \(x_t\). The stochastic gradient descent algorithm is the following:
+    \[
+        \vec{w} \leftarrow \vec{w} - \gamma_t\left(\lambda\vec{w}+
+        \begin{cases}
+            0       & \text{if } y_t(\vec{w}^Tx_t + b)>1 \\
+            -y_tx_t & \text{otherwise}
+        \end{cases}
+        \right)
+    \]
+    \[
+        b \leftarrow b - \gamma_t
+        \begin{cases}
+            0       & \text{if } y_t(\vec{w}^Tx_t + b)>1 \\
+            -y_t & \text{otherwise}
+        \end{cases}
+    \]
+    I've coded a function that implements the method. The parameters that it needs are: the coordinates of the points (\emph{X} and \emph{y}), a function to compute \(\gamma_t\), the starting values (\emph{start\_w} and \emph{start\_b}), \(\lambda\) and the number of iterations (\emph{n\_iters}).
+    \begin{lstlisting}[language=Python]
+        def stochasticGradient(X,y,get_gamma,start_w,start_b,lamb,n_iters):
+            w = start_w
+            b = start_b
+            for t in range(1,n_iters):
+                gamma = get_gamma(t)
+                i = np.random.randint(0, np.shape(X)[1])
+                xt = X[:,i]
+                yt = y[i]
+                if (yt * (np.dot(w.T, xt) + b)) > 1:
+                    w = w - gamma * lamb * w
+                    b = b
+                else:
+                    w = w - gamma * (lamb * w - yt*xt)
+                    b = b - gamma * (-yt)
+            return w, b
+    \end{lstlisting}
+    I can now try to perform some experiments using this method. First of all, I can try to compute a solution for a set of (separable) points that I've already used during the experiments with the dual formulation (check figure \ref{01-lab05-14points}). In this experiment I used the following values:
+    \[\lambda = 0.001\]
+    \[\gamma_t = \frac{1}{t}\]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-lab06-14points-with-line.png}
+        \caption{Hyperplane (\(\vec{w} = (0.5, 1)\), \(b=-3.5\)) separating 14 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{02-lab06-14points-with-line}
+    \end{figure}
+    Many times (not always!) the method converges to what seems to be the true global minimum (\(\vec{w} = (0.5, 1)\), \(b=-3.5\)), confirming the result that I got using the dual formulation. Check figure \ref{02-lab06-14points-with-line} to see the optimal hyperplane that the method computed. The method needs many iterations to converge (\(>10^4\)), but it is still very fast because each iteration only approximates the true gradient of the function instead of computing it. Unfortunately, sometimes the method converge to other points, which are clearly not better than the previous one: this is due to the random nature of this method. Indeed, it relies on the choice of the points that is performed at each iteration and because of that it could converge to some local minima.\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-lab06-50points.png}
+        \caption{50 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{02-lab06-50points}
+    \end{figure}
+    I can now try to perform an experiment using more points (see figure \ref{02-lab06-50points}). Notice that they are still separable. Notice that in this experiment I have tried to use a different value for \(\lambda\) (\(\lambda = 0.0001\)), but I have kept the same \(\gamma_t\) (\(\gamma_t = \frac{1}{t}\)).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-lab06-50points-with-line.png}
+        \caption{Hyperplane (\(\vec{w} = (0.5348, 1.1410)\), \(b=-3.9775\)) separating 50 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{02-lab06-50points-with-line}
+    \end{figure}
+    The results that I get are the same as before (see figure \ref{02-lab06-50points-with-line}): the hyperplane that the method finds is acceptable, but the results are often different (because of the inner random nature of the method).\par
+    I can conclude that when you have to choose between the stochastic gradient descent method and the gradient descent method you have to make a tradeoff. While the first method is clearly quicker and it can be used with a large amount of data, the second one is "more correct", in the sense that it usually ensures better results in less iterations and its behavior is deterministic.
