@@ -55,8 +55,14 @@
     \begin{figure}
         \centering
         \includegraphics[width=0.7\textwidth]{../Images/02-lab06-50points-with-line.png}
-        \caption{Hyperplane (\(\vec{w} = (0.5348, 1.1410)\), \(b=-3.9775\)) separating 50 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \caption{Hyperplane (\(\vec{w} = (0.4266, 0.9742)\), \(b=-3.4242\)) separating 50 points on a plane, each of which belongs to one of two categories (represented using different colors)}
         \label{02-lab06-50points-with-line}
     \end{figure}
-    The results that I get are the same as before (see figure \ref{02-lab06-50points-with-line}): the hyperplane that the method finds is acceptable, but the results are often different (because of the inner random nature of the method).\par
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/02-lab06-50points-function.png}
+        \caption{How the value of the logarithm of the function changes based on the number of iterations of the stochastic gradient descent method (experiment with 50 points)}
+        \label{03-lab06-50points-function}
+    \end{figure}
+    The results that I get are the same as before (see figure \ref{02-lab06-50points-with-line}): the hyperplane that the method finds is acceptable, but the results are often different (because of the inner random nature of the method). I've also plotted how the value of the logarithm of the function changes based on the number of iterations of the method (see figure \ref{03-lab06-50points-function}): you can easily see that the method doesn't point to the real minimum of the function and so the convergence is slow.\par
     I can conclude that when you have to choose between the stochastic gradient descent method and the gradient descent method you have to make a tradeoff. While the first method is clearly quicker and it can be used with a large amount of data, the second one is "more correct", in the sense that it usually ensures better results in less iterations and its behavior is deterministic.
