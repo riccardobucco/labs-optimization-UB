@@ -1,0 +1,97 @@
+\section{Stochastic mini-batch gradient descent}
+    The stochastic gradient descent offers a lighter-weight solution compared to the real gradient descent. Indeed, at each iteration, rather than computing the gradient of the function, it randomly samples one point and it computes the gradient on that point. In a generalized case, at each iteration a mini-batch that consists of indices for training data instances may be sampled at uniform with replacement. Notice that it's important to make the sampling \emph{with replacement}, otherwise the statistical properties of this method don't apply. Clearly, the cost of each iteration depends on the size of the mini-batch. The stochastic mini-batch gradient algorithm is the following:
+    \[
+        \vec{w} \leftarrow \vec{w} - \gamma_t\left(\lambda\vec{w}+\sum_{k \in S}
+        \begin{cases}
+            0       & \text{if } y_k(\vec{w}^Tx_k + b)>1 \\
+            -y_kx_k & \text{otherwise}
+        \end{cases}
+        \right)
+    \]
+    \[
+        b \leftarrow b - \gamma_t\left(\sum_{k \in S}
+        \begin{cases}
+            0       & \text{if } y_k(\vec{w}^Tx_k + b)>1 \\
+            -y_k    & \text{otherwise}
+        \end{cases}
+        \right)
+    \]
+    I've coded a function that implements the method. The parameters that it needs are: the coordinates of the points (\emph{X} and \emph{y}), a function to compute \(\gamma_t\), the starting values (\emph{start\_w} and \emph{start\_b}), \(\lambda\), the size of the mini-batch (\emph{batch\_size}) and the number of iterations (\emph{iters}).
+    \begin{lstlisting}[language=Python]
+        def miniBatch(X,y,get_gamma,start_w,start_b,batch_size,lamb,iters):
+            w = start_w
+            b = start_b
+            for t in range(1, n_iters):
+                gamma=get_gamma(t)
+                indexes=np.random.choice(range(0,X.shape[1]),mbatch_size)
+                x_samples = X[:,indexes]
+                y_samples = y[indexes]
+                sum_w = 0.0
+                sum_b = 0.0
+                for k in range(0, mbatch_size):
+                    if y_samples[k] * (np.dot(w.T, x_samples[:,k]) + b)>1:
+                        sum_w += 0
+                        sum_b += 0
+                    else:
+                        sum_w += -y_samples[k]*x_samples[:,k]
+                        sum_b += -y_samples[k]
+                w = w - gamma * (lamb * w + sum_w)
+                b = b - gamma * sum_b
+            return w, b
+    \end{lstlisting}
+    I can now try to perform some experiments using this method. First of all, I can try to compute a solution for a set of (separable) points that I've already used during the experiments with the dual formulation (check figure \ref{01-lab05-14points}). In this experiment I used the following values:
+    \[\lambda = 0.001\]
+    \[\gamma_t = \frac{1}{t}\]
+    \[|S| = 3\]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-14points-with-line-b3.png}
+        \caption{Hyperplane (\(\vec{w} = (0.5057, 1.1246)\), \(b=-3.7623\)) separating 14 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{03-lab06-14points-with-line-b3}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-14points-function-b3.png}
+        \caption{How the value of the logarithm of the function changes based on the number of iterations of the stochastic mini-batch gradient descent method (experiment with 14 points, \(|S| = 3\))}
+        \label{03-lab06-14points-function-b3}
+    \end{figure}
+    As you can see in figure \ref{03-lab06-14points-with-line-b3}, the method is working as expected: the hyperplane that is found is acceptable. Moreover, if you try to plot the values of the logarithm of the function against the number of iterations of the method (see figure \ref{03-lab06-14points-function-b3}) you can notice that in general the value of the function is decreasing and it finally converges. You can also easily see that the direction chosen by the method to arrive to the minimum is probably not the optimal one: this is due to the fact that we are only estimating the real gradient of the function that we want to minimize.\par
+    I can now try to perform the same experiment but using a different mini-batch size:
+    \[|S| = 10\]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-14points-with-line-b10.png}
+        \caption{Hyperplane (\(\vec{w} = (0.5296, 3.6494)\), \(b=-8.8526\)) separating 14 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{03-lab06-14points-with-line-b10}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-14points-function-b10.png}
+        \caption{How the value of the logarithm of the function changes based on the number of iterations of the stochastic mini-batch gradient descent method (experiment with 14 points, \(|S| = 10\))}
+        \label{03-lab06-14points-function-b10}
+    \end{figure}
+    As you can see in figure \ref{03-lab06-14points-with-line-b10}, the result is acceptable. However, it's worst than the one I got before: this is probably due to the fact that the algorithm gets stuck in some local minimum. You can also easily see in picture \ref{03-lab06-14points-function-b10} that the values of the logarithm of the function are decreasing more quickly compared to the previous experiment. This is due to the fact that the mini-batch algorithm with a bigger mini-batch size gives a better estimation of the real gradient. Moreover, from the image you can notice that the convergence is really fast compared, for instance, with the stochastic gradient descent method.\par
+    Finally, I can try to perform some experiments with more points. Specifically, I've tried to apply the stochastic mini-batch gradient method to some points used in previous experiments (see figure \ref{02-lab06-50points}). The parameters that I've used are again the same:
+    \[\lambda = 0.001\]
+    \[\gamma_t = \frac{1}{t}\]
+    I've tried to perform two experiments: the first one with \(|S| = 10\) and the second one with \(|S| = 20\).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-50points-with-line-b20.png}
+        \caption{Hyperplane (\(\vec{w} = (1.5421, 3.0487)\), \(b=-11.1878\)) separating 50 points on a plane, each of which belongs to one of two categories (represented using different colors)}
+        \label{03-lab06-50points-with-line-b20}
+    \end{figure}
+    The hyperplane that has been found in both the experiments is almost the same and you can't distinguish one from the other: I've included in this report just one figure (\ref{03-lab06-50points-with-line-b20}).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-50points-function-b10.png}
+        \caption{How the value of the logarithm of the function changes based on the number of iterations of the stochastic mini-batch gradient descent method (experiment with 50 points, \(|S| = 10\))}
+        \label{03-lab06-50points-function-b10}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../Images/03-lab06-50points-function-b20.png}
+        \caption{How the value of the logarithm of the function changes based on the number of iterations of the stochastic mini-batch gradient descent method (experiment with 50 points, \(|S| = 20\))}
+        \label{03-lab06-50points-function-b20}
+    \end{figure}
+    But it's important to notice that in the experiment using \(|S|=20\) you need lees iterations to converge (compare the figures \ref{03-lab06-50points-function-b10} and \ref{03-lab06-50points-function-b20}, related to the two experiments that I performed). Of course, this does not mean that the method is faster when you use a bigger mini-batch size! Indeed, the cost of each iteration is higher, because you're using more resources to estimate the gradient of the function.
